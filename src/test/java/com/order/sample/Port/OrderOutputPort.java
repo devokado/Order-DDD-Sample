@@ -9,5 +9,6 @@ public interface OrderOutputPort {
     Order save(Order order);
     Optional<Order> findById(Long id);
     List<Order> findAll();
+    Order patch(Order order);
 
 }

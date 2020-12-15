@@ -21,4 +21,9 @@ public class OrderAdapter implements OrderOutputPort {
     public List<Order> findAll() {
         return null;
     }
+
+    @Override
+    public Order patch(Order order) {
+        return null;
+    }
 }
