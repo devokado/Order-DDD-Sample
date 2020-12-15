@@ -1,4 +1,4 @@
-package com.order.sample.Adapter.Infrastructure.Jpa;
+package com.order.sample.Infrastructure.Jpa;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

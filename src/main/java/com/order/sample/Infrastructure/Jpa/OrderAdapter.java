@@ -1,4 +1,4 @@
-package com.order.sample.Adapter.Infrastructure.Jpa;
+package com.order.sample.Infrastructure.Jpa;
 
 import com.order.sample.Domain.Order;
 import com.order.sample.Port.OrderOutputPort;
