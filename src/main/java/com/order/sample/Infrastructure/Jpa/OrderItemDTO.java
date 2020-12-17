@@ -1,7 +1,8 @@
 package com.order.sample.Infrastructure.Jpa;
 
+import com.order.sample.Domain.SeedWork.Enums.Currency;
+
 import javax.persistence.*;
-import java.util.Currency;
 import java.util.UUID;
 
 @Entity
