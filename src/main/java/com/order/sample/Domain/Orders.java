@@ -1,18 +1,28 @@
 package com.order.sample.Domain;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.order.sample.Domain.SeedWork.Enums.Currency;
 import com.order.sample.Domain.SeedWork.Enums.OrderState;
+import org.springframework.lang.NonNull;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
+import java.time.Clock;
+import java.time.Instant;
+import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 public class Orders {
+    @Version
+    private Long version;
     private UUID id;
-    private Timestamp orderedOn;
+    private Instant orderedOn;
     private Currency currency;
-    private OrderState orderState;
+    private OrderState state;
+    private Set<OrderStateChange> stateChangeHistory;
     @Embedded
     @AttributeOverrides({
             @AttributeOverride(name = "name", column = @Column(name = "shipping_name", nullable = false)),
@@ -29,11 +39,85 @@ public class Orders {
     public Orders() {
     }
 
-    public Orders(UUID id, Timestamp orderedOn, Currency currency, OrderState orderState, Set<OrderItem> items) {
+    public Orders(UUID id, Instant orderedOn, Currency currency, Set<OrderItem> items, RecipientAddress recipientAddress) {
         this.id = id;
-        this.orderedOn = orderedOn;
-        this.currency = currency;
-        this.orderState = orderState;
-        this.items = items;
+        this.items = new HashSet<>();
+        setOrderedOn(orderedOn);
+        setCurrency(currency);
+        setState(OrderState.RECEIVED, orderedOn);
+        setShippingAddress(recipientAddress);
+    }
+    @NonNull
+    @JsonProperty("currency")
+    public Currency currency() {
+        return currency;
+    }
+
+    private void setCurrency(@NonNull Currency currency) {
+        this.currency = Objects.requireNonNull(currency, "currency must not be null");
+    }
+
+    @NonNull
+    @JsonProperty("orderedOn")
+    public Instant orderedOn() {
+        return orderedOn;
+    }
+    private void setOrderedOn(@NonNull Instant orderedOn) {
+        this.orderedOn = Objects.requireNonNull(orderedOn, "orderedOn must not be null");
+    }
+    @NonNull
+    @JsonProperty("state")
+    public OrderState state() {
+        return state;
+    }
+
+    private void setState(@NonNull OrderState state, @NonNull Clock clock) {
+        Objects.requireNonNull(clock, "clock must not be null");
+        setState(state, clock.instant());
+    }
+    private void setState(@NonNull OrderState state, @NonNull Instant changedOn) {
+        Objects.requireNonNull(state, "state must not be null");
+        Objects.requireNonNull(changedOn, "changedOn must not be null");
+        if (stateChangeHistory.stream().anyMatch(stateChange -> stateChange.state().equals(state))) {
+            throw new IllegalStateException("Order has already been in state " + state);
+        }
+        this.state = state;
+        var stateChange = new OrderStateChange(changedOn, state);
+        stateChangeHistory.add(stateChange);
+        if (stateChangeHistory.size() > 1) { // Don't fire an event for the initial state
+           // registerEvent(new OrderStateChanged(id(), stateChange.state(), stateChange.changedOn()));
+        }
+    }
+    @NonNull
+    @JsonProperty("shippingAddress")
+    public RecipientAddress shippingAddress() {
+        return shippingAddress;
+    }
+
+    private void setShippingAddress(@NonNull RecipientAddress shippingAddress) {
+        this.shippingAddress = Objects.requireNonNull(shippingAddress, "shippingAddress must not be null");
+    }
+    @NonNull
+    @JsonProperty("items")
+    public Stream<OrderItem> items() {
+        return items.stream();
+    }
+
+
+    public void cancel(@NonNull Clock clock) {
+        setState(OrderState.CANCELLED, clock);
+    }
+
+    public void startProcessing(@NonNull Clock clock) {
+        setState(OrderState.PROCESSING, clock);
+    }
+
+    public void finishProcessing(@NonNull Clock clock) {
+        setState(OrderState.PROCESSED, clock);
+    }
+
+    @Nullable
+    public Long version() {
+        return version;
     }
 }

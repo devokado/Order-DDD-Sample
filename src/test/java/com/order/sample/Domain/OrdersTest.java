@@ -1,23 +1,28 @@
 package com.order.sample.Domain;
 
 import com.order.sample.Domain.SeedWork.Enums.Currency;
+import com.order.sample.Domain.SeedWork.Geo.CityName;
+import com.order.sample.Domain.SeedWork.Geo.Country;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.sql.Timestamp;
-import java.util.Date;
+import java.time.Instant;
+import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 
 public class OrdersTest {
 
     @Test
     @DisplayName("Create domain Orders class Test")
     public void createOrdersTest(){
-        Date date = new Date();
-        Timestamp ts =new Timestamp(date.getTime());
-        Currency currency ;
-        Orders orders = new Orders();
-        assertThat(orders);
+        Set<OrderItem> itemSet = new HashSet<>();
+        itemSet.add(new OrderItem(UUID.randomUUID(),"desc",100L));
+        RecipientAddress recipientAddress = new RecipientAddress("name","address",new CityName("tehran"), Country.IRAN);
+        Orders newOrder = new Orders(UUID.randomUUID(), Instant.now(),Currency.Rial,itemSet,recipientAddress);
+        assertThat(newOrder.currency().equals("Rial"));
+
     }
 }
