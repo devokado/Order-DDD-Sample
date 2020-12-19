@@ -25,4 +25,9 @@ public class OrdersTest {
         assertThat(newOrder.currency().equals("Rial"));
 
     }
+    @Test
+    @DisplayName("Create order item")
+    public void createOrderItem(){
+
+    }
 }
