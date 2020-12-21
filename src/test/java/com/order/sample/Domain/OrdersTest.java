@@ -28,6 +28,8 @@ public class OrdersTest {
     @Test
     @DisplayName("Create order item")
     public void createOrderItem(){
+        OrderItem orderItem = new OrderItem(UUID.randomUUID(),"desc",100L);
+        assertThat(orderItem.itemDescription().equals("desc"));
 
     }
 }
