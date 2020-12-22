@@ -21,8 +21,8 @@ public class OrdersTest {
         Set<OrderItem> itemSet = new HashSet<>();
         itemSet.add(new OrderItem(UUID.randomUUID(),"desc",100L));
         RecipientAddress recipientAddress = new RecipientAddress("name","address",new CityName("tehran"), Country.IRAN);
-        Orders newOrder = new Orders(UUID.randomUUID(), Instant.now(),Currency.Rial,itemSet,recipientAddress);
-        assertThat(newOrder.currency().equals("Rial"));
+        Orders newOrder = new Orders(Instant.now(),Currency.Rial,recipientAddress);
+        assertThat(newOrder.id() != null);
 
     }
     @Test
@@ -32,4 +32,10 @@ public class OrdersTest {
         assertThat(orderItem.itemDescription().equals("desc"));
 
     }
+    @Test
+    @DisplayName("")
+    public void recipientAddress(){
+
+    }
+
 }

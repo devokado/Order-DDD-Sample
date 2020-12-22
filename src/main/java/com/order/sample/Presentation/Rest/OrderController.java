@@ -1,4 +1,4 @@
-package com.order.sample.Adapter.Rest;
+package com.order.sample.Presentation.Rest;
 
 import org.springframework.web.bind.annotation.RestController;
 

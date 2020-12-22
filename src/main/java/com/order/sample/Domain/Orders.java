@@ -1,6 +1,9 @@
 package com.order.sample.Domain;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.order.sample.Domain.SeedWork.Base.AbstractAggregateRoot;
+import com.order.sample.Domain.SeedWork.Base.ConcurrencySafeDomainObject;
+import com.order.sample.Domain.SeedWork.Base.DomainObjectId;
 import com.order.sample.Domain.SeedWork.Enums.Currency;
 import com.order.sample.Domain.SeedWork.Enums.OrderState;
 import org.springframework.lang.NonNull;
@@ -12,16 +15,18 @@ import java.time.Instant;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
-import java.util.UUID;
 import java.util.stream.Stream;
 
-public class Orders {
+public class Orders extends AbstractAggregateRoot<OrderId> implements ConcurrencySafeDomainObject {
     @Version
     private Long version;
-    private UUID id;
     private Instant orderedOn;
     private Currency currency;
+    @Column(name = "order_state", nullable = false)
+    @Enumerated(EnumType.STRING)
     private OrderState state;
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "order_state_changes")
     private Set<OrderStateChange> stateChangeHistory;
     @Embedded
     @AttributeOverrides({
@@ -39,8 +44,9 @@ public class Orders {
     public Orders() {
     }
 
-    public Orders(UUID id, Instant orderedOn, Currency currency, Set<OrderItem> items, RecipientAddress recipientAddress) {
-        this.id = id;
+    public Orders(Instant orderedOn, Currency currency, RecipientAddress recipientAddress) {
+        super(DomainObjectId.randomId(OrderId.class));
+        this.stateChangeHistory = new HashSet<>();
         this.items = new HashSet<>();
         setOrderedOn(orderedOn);
         setCurrency(currency);
@@ -84,7 +90,7 @@ public class Orders {
         this.state = state;
         var stateChange = new OrderStateChange(changedOn, state);
         stateChangeHistory.add(stateChange);
-        if (stateChangeHistory.size() > 1) { // Don't fire an event for the initial state
+        if (stateChangeHistory.size() > 1) {// Don't fire an event for the initial state
            // registerEvent(new OrderStateChanged(id(), stateChange.state(), stateChange.changedOn()));
         }
     }
@@ -97,6 +103,13 @@ public class Orders {
     private void setShippingAddress(@NonNull RecipientAddress shippingAddress) {
         this.shippingAddress = Objects.requireNonNull(shippingAddress, "shippingAddress must not be null");
     }
+
+    @NonNull
+    @JsonProperty("stateChangeHistory")
+    public Stream<OrderStateChange> stateChangeHistory() {
+        return stateChangeHistory.stream();
+    }
+
     @NonNull
     @JsonProperty("items")
     public Stream<OrderItem> items() {
