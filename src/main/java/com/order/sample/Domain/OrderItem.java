@@ -1,16 +1,17 @@
 package com.order.sample.Domain;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.order.sample.Domain.SeedWork.Base.AbstractAggregateRoot;
+import com.order.sample.Domain.SeedWork.Base.DomainObjectId;
 import com.order.sample.Domain.SeedWork.Enums.Currency;
 import org.springframework.lang.NonNull;
 
 import java.util.Objects;
 import java.util.UUID;
 
-public class OrderItem {
-    private UUID id;
-    private UUID productId;
-    private UUID orderId;
+public class OrderItem extends AbstractAggregateRoot<OrderItemId> {
+
+    private ProductId productId;
     private String itemDescription;
     private Long itemPrice;
     private Currency itemPriceCurrency;
@@ -19,18 +20,19 @@ public class OrderItem {
     public OrderItem() {
     }
 
-    OrderItem(@NonNull UUID productId, @NonNull String itemDescription, @NonNull Long itemPrice) {
+    OrderItem(@NonNull ProductId productId, @NonNull String itemDescription, @NonNull Long itemPrice) {
+        super(DomainObjectId.randomId(OrderItemId.class));
         setProductId(productId);
         setItemDescription(itemDescription);
         setItemPrice(itemPrice);
     }
     @NonNull
     @JsonProperty("productId")
-    public UUID productId() {
+    public ProductId productId() {
         return productId;
     }
 
-    private void setProductId(@NonNull UUID productId) {
+    private void setProductId(@NonNull ProductId productId) {
         this.productId = Objects.requireNonNull(productId, "productId must not be null");
     }
     @NonNull

@@ -1,14 +1,14 @@
 package com.order.sample.Domain.Port;
 
-import com.order.sample.Domain.Orders;
+import com.order.sample.Domain.Order;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface OrderInterface {
-    Orders save(Orders orders);
-    Optional<Orders> findById(Long id);
-    List<Orders> findAll();
-    Orders patch(Orders orders);
+    Order save(Order order);
+    Optional<Order> findById(Long id);
+    List<Order> findAll();
+    Order patch(Order order);
 
 }

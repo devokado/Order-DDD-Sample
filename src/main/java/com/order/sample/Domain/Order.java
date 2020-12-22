@@ -17,7 +17,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Stream;
 
-public class Orders extends AbstractAggregateRoot<OrderId> implements ConcurrencySafeDomainObject {
+public class Order extends AbstractAggregateRoot<OrderId> implements ConcurrencySafeDomainObject {
     @Version
     private Long version;
     private Instant orderedOn;
@@ -41,10 +41,10 @@ public class Orders extends AbstractAggregateRoot<OrderId> implements Concurrenc
     @JoinColumn(name = "order_id", nullable = false)
     private Set<OrderItem> items;
 
-    public Orders() {
+    public Order() {
     }
 
-    public Orders(Instant orderedOn, Currency currency, RecipientAddress recipientAddress) {
+    public Order(Instant orderedOn, Currency currency, RecipientAddress recipientAddress) {
         super(DomainObjectId.randomId(OrderId.class));
         this.stateChangeHistory = new HashSet<>();
         this.items = new HashSet<>();
@@ -115,7 +115,14 @@ public class Orders extends AbstractAggregateRoot<OrderId> implements Concurrenc
     public Stream<OrderItem> items() {
         return items.stream();
     }
-
+    @NonNull
+    public OrderItem addItem(@NonNull Product product, int qty) {
+        Objects.requireNonNull(product, "product must not be null");
+        var item = new OrderItem(product.id(), product.name(),product.price());
+        item.setQuantity(qty);
+        items.add(item);
+        return item;
+    }
 
     public void cancel(@NonNull Clock clock) {
         setState(OrderState.CANCELLED, clock);
