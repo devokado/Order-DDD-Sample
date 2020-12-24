@@ -16,10 +16,10 @@ import java.util.Objects;
  *  @Embeddable annotation over a class defines that, it does not have independent existence.
  *  Thus we cannot run DB queries, without depending on other class.
  */
-@Embeddable
+
 public class RecipientAddress extends Address {
 
-    @Column(name = "recipient_name")
+
     private String name;
 
     public RecipientAddress() {

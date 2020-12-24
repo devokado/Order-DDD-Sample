@@ -2,10 +2,9 @@ package com.order.sample.Presentation.Rest;
 
 import com.order.sample.Application.OrderImpl;
 import com.order.sample.Domain.Order;
+import com.order.sample.Presentation.Rest.Request.OrderReq;
 import com.order.sample.Presentation.Rest.Response.OrderResponse;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,6 +21,12 @@ public class OrderController {
     public List<OrderResponse> findAll() {
         List<Order> orders =  orderImpl.findAll();
      // OrderResponse orderResponse=  orderImpl.findAll();
+        return null;
+    }
+    @PostMapping
+    public OrderResponse createOrder(@RequestBody OrderReq orderReq){
+        Order order = orderReq.toDomainModel();
+        orderImpl.save(order);
         return null;
     }
 }

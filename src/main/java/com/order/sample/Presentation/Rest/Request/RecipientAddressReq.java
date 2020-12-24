@@ -1,5 +1,6 @@
 package com.order.sample.Presentation.Rest.Request;
 
+import com.order.sample.Domain.RecipientAddress;
 import com.order.sample.Domain.SeedWork.Geo.CityName;
 import com.order.sample.Domain.SeedWork.Geo.Country;
 
@@ -44,5 +45,8 @@ public class RecipientAddressReq implements Serializable {
 
     public void setCountry(Country country) {
         this.country = country;
+    }
+    public RecipientAddress toDomainModel(){
+        return new RecipientAddress(getName(),getAddressLine1(),getCity(),getCountry());
     }
 }

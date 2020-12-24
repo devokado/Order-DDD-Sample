@@ -1,5 +1,6 @@
 package com.order.sample.Presentation.Rest.Request;
 
+import com.order.sample.Domain.Order;
 import com.order.sample.Domain.Product;
 
 import javax.validation.constraints.Min;
@@ -27,5 +28,7 @@ public class OrderItemReq implements Serializable {
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
+
+
 
 }

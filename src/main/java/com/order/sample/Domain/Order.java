@@ -22,19 +22,10 @@ public class Order extends AbstractAggregateRoot<OrderId> implements Concurrency
     private Long version;
     private Instant orderedOn;
     private Currency currency;
-    @Column(name = "order_state", nullable = false)
     @Enumerated(EnumType.STRING)
     private OrderState state;
-    @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "order_state_changes")
     private Set<OrderStateChange> stateChangeHistory;
-    @Embedded
-    @AttributeOverrides({
-            @AttributeOverride(name = "name", column = @Column(name = "shipping_name", nullable = false)),
-            @AttributeOverride(name = "addressLine1", column = @Column(name = "shipping_addr1", nullable = false)),
-            @AttributeOverride(name = "city", column = @Column(name = "shipping_city", nullable = false)),
-            @AttributeOverride(name = "country", column = @Column(name = "shipping_country", nullable = false))
-    })
+
     private RecipientAddress shippingAddress;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)

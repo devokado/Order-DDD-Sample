@@ -23,14 +23,22 @@ public class OrderDTO {
     private Timestamp orderedOn;
     @Column(name="order_currency",nullable = false)
     private String currency;
+    @Column(name = "order_state", nullable = false)
+    private String state;
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "name", column = @Column(name = "shipping_name", nullable = false)),
+            @AttributeOverride(name = "addressLine1", column = @Column(name = "line1", nullable = false)),
+            @AttributeOverride(name = "city", column = @Column(name = "city", nullable = false)),
+            @AttributeOverride(name = "country", column = @Column(name = "country", nullable = false))
+    })
+    private RecipientAddressDTO shippingAddress;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JoinColumn(name = "order_id", nullable = false)
     private Set<OrderItemDTO> items;
 
-//    Order asResponse(){
-//       return new Order(orderedOn,currency,new RecipientAddress("",new CityName("tehran"),));
-//    }
+
 
 
 
