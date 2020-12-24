@@ -3,8 +3,6 @@ package com.order.sample.Application;
 import com.order.sample.Domain.Order;
 import com.order.sample.Domain.Port.OrderInterface;
 import com.order.sample.Infrastructure.Jpa.OrderRepository;
-import com.order.sample.Infrastructure.Jpa.OrderDTO;
-import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

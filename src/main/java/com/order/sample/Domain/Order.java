@@ -110,11 +110,7 @@ public class Order extends AbstractAggregateRoot<OrderId> implements Concurrency
         return stateChangeHistory.stream();
     }
 
-    @NonNull
-    @JsonProperty("items")
-    public Stream<OrderItem> items() {
-        return items.stream();
-    }
+
     @NonNull
     public OrderItem addItem(@NonNull Product product, int qty) {
         Objects.requireNonNull(product, "product must not be null");
@@ -122,6 +118,12 @@ public class Order extends AbstractAggregateRoot<OrderId> implements Concurrency
         item.setQuantity(qty);
         items.add(item);
         return item;
+    }
+
+    @NonNull
+    @JsonProperty("items")
+    public Stream<OrderItem> items() {
+        return items.stream();
     }
 
     public void cancel(@NonNull Clock clock) {
