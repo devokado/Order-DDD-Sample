@@ -38,8 +38,4 @@ public class OrderDTO {
     @JoinColumn(name = "order_id", nullable = false)
     private Set<OrderItemDTO> items;
 
-
-
-
-
 }
