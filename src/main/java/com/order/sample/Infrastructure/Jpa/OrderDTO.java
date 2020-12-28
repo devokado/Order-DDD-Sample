@@ -1,14 +1,8 @@
 package com.order.sample.Infrastructure.Jpa;
 
-import com.order.sample.Domain.Order;
-import com.order.sample.Domain.OrderItem;
-import com.order.sample.Domain.RecipientAddress;
-import com.order.sample.Domain.SeedWork.Geo.CityName;
-import com.order.sample.Domain.SeedWork.Geo.Country;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
-import java.util.Currency;
 import java.util.Set;
 import java.util.UUID;
 
@@ -38,4 +32,7 @@ public class OrderDTO {
     @JoinColumn(name = "order_id", nullable = false)
     private Set<OrderItemDTO> items;
 
+    @SuppressWarnings("unused")
+    public OrderDTO() {
+    }
 }

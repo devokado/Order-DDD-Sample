@@ -25,11 +25,7 @@ public class Order extends AbstractAggregateRoot<OrderId> implements Concurrency
     @Enumerated(EnumType.STRING)
     private OrderState state;
     private Set<OrderStateChange> stateChangeHistory;
-
     private RecipientAddress shippingAddress;
-
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    @JoinColumn(name = "order_id", nullable = false)
     private Set<OrderItem> items;
 
     public Order() {
