@@ -32,7 +32,7 @@ public class Order extends AbstractAggregateRoot<OrderId> implements Concurrency
     }
 
     public Order(Instant orderedOn, Currency currency, RecipientAddress recipientAddress) {
-        super(DomainObjectId.randomId(OrderId.class));
+      //  super(DomainObjectId.randomId(OrderId.class));
         this.stateChangeHistory = new HashSet<>();
         this.items = new HashSet<>();
         setOrderedOn(orderedOn);

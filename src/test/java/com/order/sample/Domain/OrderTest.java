@@ -3,6 +3,9 @@ package com.order.sample.Domain;
 import com.order.sample.Domain.SeedWork.Enums.Currency;
 import com.order.sample.Domain.SeedWork.Geo.CityName;
 import com.order.sample.Domain.SeedWork.Geo.Country;
+import com.order.sample.Infrastructure.Jpa.OrderDTO;
+import com.order.sample.Infrastructure.Jpa.OrderItemDTO;
+import com.order.sample.Infrastructure.Jpa.RecipientAddressDTO;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -30,9 +33,12 @@ public class OrderTest {
 
     }
     @Test
-    @DisplayName("")
-    public void recipientAddress(){
-
+    @DisplayName("Convert order to DTO")
+    public void ConvertOrderToDTO(){
+        Set<OrderItemDTO> itemDTOS =new HashSet<>();
+        Order expectedOrder = new Order(Instant.now(),Currency.Rial,new RecipientAddress("name","add",new CityName("tehran"),Country.IRAN));
+        OrderDTO orderDTO = new OrderDTO(UUID.randomUUID().toString(),Instant.now(),Currency.Rial.toString(),"received",new RecipientAddressDTO("name","add",new CityName("tehran"),Country.IRAN),itemDTOS);
+        assertThat(orderDTO.asOrder()).isEqualTo(expectedOrder);
     }
 
 }

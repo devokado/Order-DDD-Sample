@@ -1,8 +1,11 @@
 package com.order.sample.Infrastructure.Jpa;
 
 
+import com.order.sample.Domain.Order;
+import com.order.sample.Domain.SeedWork.Enums.Currency;
+
 import javax.persistence.*;
-import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.Set;
 import java.util.UUID;
 
@@ -12,9 +15,9 @@ public class OrderDTO {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
+    private String id;
     @Column(name ="ordered_on",nullable = false)
-    private Timestamp orderedOn;
+    private Instant orderedOn;
     @Column(name="order_currency",nullable = false)
     private String currency;
     @Column(name = "order_state", nullable = false)
@@ -34,5 +37,17 @@ public class OrderDTO {
 
     @SuppressWarnings("unused")
     public OrderDTO() {
+    }
+
+    public OrderDTO(String id, Instant orderedOn, String currency, String state, RecipientAddressDTO shippingAddress, Set<OrderItemDTO> items) {
+        this.id = id;
+        this.orderedOn = orderedOn;
+        this.currency = currency;
+        this.state = state;
+        this.shippingAddress = shippingAddress;
+        this.items = items;
+    }
+   public Order asOrder(){
+        return new Order(orderedOn,Currency.valueOf(currency),shippingAddress.asRecipientAddress());
     }
 }

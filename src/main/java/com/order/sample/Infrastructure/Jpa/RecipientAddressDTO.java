@@ -1,5 +1,6 @@
 package com.order.sample.Infrastructure.Jpa;
 
+import com.order.sample.Domain.RecipientAddress;
 import com.order.sample.Domain.SeedWork.Geo.Address;
 import com.order.sample.Domain.SeedWork.Geo.CityName;
 import com.order.sample.Domain.SeedWork.Geo.Country;
@@ -20,6 +21,11 @@ public class RecipientAddressDTO extends Address {
         super(addressLine1, city, country);
         this.name = Objects.requireNonNull(name, "name must not be null");
     }
+   public RecipientAddress asRecipientAddress(){
+        return new RecipientAddress(name,this.getAddressLine1(),this.getCity(),this.getCountry());
+    }
+
+
 
 
 }
