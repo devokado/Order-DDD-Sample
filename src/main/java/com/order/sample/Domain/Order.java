@@ -6,6 +6,11 @@ import com.order.sample.Domain.SeedWork.Base.ConcurrencySafeDomainObject;
 import com.order.sample.Domain.SeedWork.Base.DomainObjectId;
 import com.order.sample.Domain.SeedWork.Enums.Currency;
 import com.order.sample.Domain.SeedWork.Enums.OrderState;
+import com.order.sample.Presentation.Rest.Request.OrderReq;
+import lombok.Getter;
+import lombok.Setter;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 
@@ -16,6 +21,7 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Stream;
+
 
 public class Order extends AbstractAggregateRoot<OrderId> implements ConcurrencySafeDomainObject {
     @Version
@@ -32,7 +38,7 @@ public class Order extends AbstractAggregateRoot<OrderId> implements Concurrency
     }
 
     public Order(Instant orderedOn, Currency currency, RecipientAddress recipientAddress) {
-      //  super(DomainObjectId.randomId(OrderId.class));
+        super(DomainObjectId.randomId(OrderId.class));
         this.stateChangeHistory = new HashSet<>();
         this.items = new HashSet<>();
         setOrderedOn(orderedOn);
@@ -128,5 +134,28 @@ public class Order extends AbstractAggregateRoot<OrderId> implements Concurrency
     @Nullable
     public Long version() {
         return version;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
+    }
+
+    public void setState(OrderState state) {
+        this.state = state;
+    }
+
+    public void setStateChangeHistory(Set<OrderStateChange> stateChangeHistory) {
+        this.stateChangeHistory = stateChangeHistory;
+    }
+
+    public void setItems(Set<OrderItem> items) {
+        this.items = items;
+    }
+
+    public static Order toDomainModel(OrderReq req){
+        ModelMapper modelMapper = new ModelMapper();
+        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+        Order order= modelMapper.map(req,Order.class);
+        return order;
     }
 }

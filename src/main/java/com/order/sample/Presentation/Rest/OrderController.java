@@ -4,6 +4,7 @@ import com.order.sample.Application.OrderImpl;
 import com.order.sample.Domain.Order;
 import com.order.sample.Presentation.Rest.Request.OrderReq;
 import com.order.sample.Presentation.Rest.Response.OrderResponse;
+import org.aspectj.weaver.ast.Or;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,9 +24,9 @@ public class OrderController {
      // OrderResponse orderResponse=  orderImpl.findAll();
         return null;
     }
-    @PostMapping
+    @PostMapping()
     public OrderResponse createOrder(@RequestBody OrderReq orderReq){
-        Order order = orderReq.toDomainModel();
+        Order order = Order.toDomainModel(orderReq);
         orderImpl.save(order);
         return null;
     }
