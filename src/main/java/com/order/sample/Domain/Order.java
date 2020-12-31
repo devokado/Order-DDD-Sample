@@ -6,9 +6,11 @@ import com.order.sample.Domain.SeedWork.Base.ConcurrencySafeDomainObject;
 import com.order.sample.Domain.SeedWork.Base.DomainObjectId;
 import com.order.sample.Domain.SeedWork.Enums.Currency;
 import com.order.sample.Domain.SeedWork.Enums.OrderState;
+import com.order.sample.Infrastructure.Jpa.OrderDTO;
 import com.order.sample.Presentation.Rest.Request.OrderReq;
 import lombok.Getter;
 import lombok.Setter;
+import org.modelmapper.Conditions;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.lang.NonNull;
@@ -24,6 +26,7 @@ import java.util.stream.Stream;
 
 
 public class Order extends AbstractAggregateRoot<OrderId> implements ConcurrencySafeDomainObject {
+
     @Version
     private Long version;
     private Instant orderedOn;
@@ -154,8 +157,9 @@ public class Order extends AbstractAggregateRoot<OrderId> implements Concurrency
 
     public static Order toDomainModel(OrderReq req){
         ModelMapper modelMapper = new ModelMapper();
-        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
-        Order order= modelMapper.map(req,Order.class);
-        return order;
+        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);
+        Order order= modelMapper.map(req, Order.class);
+        modelMapper.getConfiguration();
+        return null;
     }
 }

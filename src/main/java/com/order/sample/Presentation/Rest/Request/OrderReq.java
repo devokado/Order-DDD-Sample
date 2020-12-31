@@ -3,6 +3,7 @@ package com.order.sample.Presentation.Rest.Request;
 import com.order.sample.Domain.Order;
 import com.order.sample.Domain.RecipientAddress;
 import com.order.sample.Domain.SeedWork.Enums.Currency;
+import javassist.compiler.ast.StringL;
 
 
 import javax.validation.Valid;
@@ -14,36 +15,86 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class OrderReq implements Serializable {
-    @NotNull
-    private Currency currency;
-    @Valid
-    @NotNull
-    private RecipientAddressReq recipientAddress = new RecipientAddressReq();
-    @Valid
-    @NotEmpty
-    private List<OrderItemReq> items = new ArrayList<>();
 
-    public Currency getCurrency() {
+    private String currency;
+    private String name;
+    private String addressLine1;
+    private String city;
+    private String country;
+    private String productId;
+    private String itemDescription;
+    private Long itemPrice;
+    private Integer quantity;
+
+    public String getCurrency() {
         return currency;
     }
 
-    public void setCurrency(Currency currency) {
+    public void setCurrency(String currency) {
         this.currency = currency;
     }
 
-    public RecipientAddressReq getRecipientAddress() {
-        return recipientAddress;
+    public String getName() {
+        return name;
     }
 
-    public void setRecipientAddress(RecipientAddressReq recipientAddress) {
-        this.recipientAddress = recipientAddress;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public List<OrderItemReq> getItems() {
-        return items;
+    public String getAddressLine1() {
+        return addressLine1;
     }
-    public Order toDomainModel(){
-        return new Order(Instant.now(),currency,recipientAddress.toDomainModel());
 
+    public void setAddressLine1(String addressLine1) {
+        this.addressLine1 = addressLine1;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getProductId() {
+        return productId;
+    }
+
+    public void setProductId(String productId) {
+        this.productId = productId;
+    }
+
+    public String getItemDescription() {
+        return itemDescription;
+    }
+
+    public void setItemDescription(String itemDescription) {
+        this.itemDescription = itemDescription;
+    }
+
+    public Long getItemPrice() {
+        return itemPrice;
+    }
+
+    public void setItemPrice(Long itemPrice) {
+        this.itemPrice = itemPrice;
+    }
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
     }
 }

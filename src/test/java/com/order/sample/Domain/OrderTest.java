@@ -6,16 +6,23 @@ import com.order.sample.Domain.SeedWork.Geo.Country;
 import com.order.sample.Infrastructure.Jpa.OrderDTO;
 import com.order.sample.Infrastructure.Jpa.OrderItemDTO;
 import com.order.sample.Infrastructure.Jpa.RecipientAddressDTO;
+import com.order.sample.Presentation.Rest.Request.OrderReq;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.Instant;
 import java.util.*;
-
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
 
+@SpringBootTest
 public class OrderTest {
+
+    @Mock
+    private ModelMapper modelMapper;
 
     @Test
     @DisplayName("Create domain Orders class Test")
@@ -39,6 +46,17 @@ public class OrderTest {
         Order expectedOrder = new Order(Instant.now(),Currency.Rial,new RecipientAddress("name","add",new CityName("tehran"),Country.IRAN));
         OrderDTO orderDTO = new OrderDTO(UUID.randomUUID().toString(),Instant.now(),Currency.Rial.toString(),"received",new RecipientAddressDTO("name","add",new CityName("tehran"),Country.IRAN),itemDTOS);
         assertThat(orderDTO.asOrder()).isEqualTo(expectedOrder);
+    }
+
+    @Test
+    @DisplayName("Model mapper")
+    public void modelMapperTest(){
+        Order order =new Order(Instant.now(),Currency.Rial,new RecipientAddress("antea","somewhere",new CityName("tehran"),Country.IRAN));
+        OrderReq req = modelMapper.map(order,OrderReq.class);
+        assertThat(req.getCurrency().equals(order.currency()));
+
+
+
     }
 
 }
