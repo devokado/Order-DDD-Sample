@@ -4,11 +4,11 @@ package com.order.sample.Infrastructure.Jpa;
 import com.order.sample.Domain.Order;
 import com.order.sample.Domain.RecipientAddress;
 import com.order.sample.Domain.SeedWork.Enums.Currency;
-import com.order.sample.Domain.SeedWork.Geo.CityName;
 
 import javax.persistence.*;
 import java.time.Instant;
 import java.util.Set;
+import java.util.UUID;
 
 @Entity
 @Table(name = "orders")
@@ -16,7 +16,7 @@ public class OrderDTO {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private String id;
+    private UUID id;
     @Column(name ="ordered_on",nullable = false)
     private static Instant orderedOn;
     @Column(name="order_currency",nullable = false)
@@ -40,7 +40,7 @@ public class OrderDTO {
     public OrderDTO() {
     }
 
-    public OrderDTO(String id, Instant orderedOn, String currency, String state, RecipientAddressDTO shippingAddress, Set<OrderItemDTO> items) {
+    public OrderDTO(UUID id, Instant orderedOn, String currency, String state, RecipientAddressDTO shippingAddress, Set<OrderItemDTO> items) {
         this.id = id;
         this.orderedOn = orderedOn;
         this.currency = currency;
@@ -50,7 +50,7 @@ public class OrderDTO {
     }
 
     public static OrderDTO fromOrder(Order order){
-      return  new OrderDTO(order.id().toString(),order.orderedOn(),order.currency().toString(),order.state().toString(),new RecipientAddressDTO(order.shippingAddress().name(),order.shippingAddress().getAddressLine1(),order.shippingAddress().getCity(),order.shippingAddress().getCountry()),null);
+      return  new OrderDTO(UUID.fromString(order.id().toUUID()),order.orderedOn(),order.currency().toString(),order.state().toString(),new RecipientAddressDTO(order.shippingAddress().name(),order.shippingAddress().getAddressLine1(),order.shippingAddress().getCity(),order.shippingAddress().getCountry()),null);
     }
     public static Order toOrder(){
         return new Order(orderedOn,Currency.valueOf(currency),new RecipientAddress(shippingAddress.getName(),shippingAddress.getAddressLine1(),shippingAddress.getCity(),shippingAddress.getCountry()));
