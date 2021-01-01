@@ -18,11 +18,11 @@ public class OrderDTO {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
     @Column(name ="ordered_on",nullable = false)
-    private static Instant orderedOn;
+    private  Instant orderedOn;
     @Column(name="order_currency",nullable = false)
-    private static String currency;
+    private  String currency;
     @Column(name = "order_state", nullable = false)
-    private String state;
+    private  String state;
     @Embedded
     @AttributeOverrides({
             @AttributeOverride(name = "name", column = @Column(name = "shipping_name", nullable = false)),
@@ -52,7 +52,7 @@ public class OrderDTO {
     public static OrderDTO fromOrder(Order order){
       return  new OrderDTO(UUID.fromString(order.id().toUUID()),order.orderedOn(),order.currency().toString(),order.state().toString(),new RecipientAddressDTO(order.shippingAddress().name(),order.shippingAddress().getAddressLine1(),order.shippingAddress().getCity(),order.shippingAddress().getCountry()),null);
     }
-    public static Order toOrder(){
+    public Order toOrder(){
         return new Order(orderedOn,Currency.valueOf(currency),new RecipientAddress(shippingAddress.getName(),shippingAddress.getAddressLine1(),shippingAddress.getCity(),shippingAddress.getCountry()));
     }
 
