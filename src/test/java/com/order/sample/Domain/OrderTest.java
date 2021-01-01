@@ -4,14 +4,13 @@ import com.order.sample.Domain.SeedWork.Enums.Currency;
 import com.order.sample.Domain.SeedWork.Geo.CityName;
 import com.order.sample.Domain.SeedWork.Geo.Country;
 import com.order.sample.Infrastructure.Jpa.OrderDTO;
-import com.order.sample.Infrastructure.Jpa.OrderItemDTO;
 import com.order.sample.Infrastructure.Jpa.RecipientAddressDTO;
 import com.order.sample.Presentation.Rest.Request.OrderReq;
+import com.order.sample.Presentation.Rest.Response.OrderResponse;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.modelmapper.ModelMapper;
-import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.*;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -64,6 +63,13 @@ public class OrderTest {
         OrderDTO dto = new OrderDTO(UUID.randomUUID().toString(),Instant.now(),"Rial","RECEIVED",new RecipientAddressDTO("name","someWhere",new CityName("tehran"),Country.IRAN),null);
         Order order = dto.toOrder();
         assertThat(order.equals(dto));
+    }
+    @Test
+    @DisplayName("Convert Order to OrderResponse")
+    public void convertOrderToOrderRes(){
+        Order order = new Order(Instant.now(),Currency.Rial,new RecipientAddress("name","somewhere",new CityName("tehran"),Country.IRAN));
+        OrderResponse res = OrderResponse.from(order);
+        assertThat(res.equals(order));
     }
 
 

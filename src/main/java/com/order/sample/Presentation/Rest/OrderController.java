@@ -26,7 +26,8 @@ public class OrderController {
     @PostMapping()
     public OrderResponse createOrder(@RequestBody OrderReq orderReq){
         Order order = Order.toDomainModel(orderReq);
-        orderInterface.save(order);
-        return null;
+        Order orderRes = orderInterface.save(order);
+        OrderResponse response = OrderResponse.from(orderRes);
+        return response;
     }
 }
