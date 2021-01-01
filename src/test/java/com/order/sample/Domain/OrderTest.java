@@ -38,10 +38,9 @@ public class OrderTest {
     @Test
     @DisplayName("Convert order to DTO")
     public void ConvertOrderToDTO(){
-        Set<OrderItemDTO> itemDTOS =new HashSet<>();
-        Order expectedOrder = new Order(Instant.now(),Currency.Rial,new RecipientAddress("name","add",new CityName("tehran"),Country.IRAN));
-        OrderDTO orderDTO = new OrderDTO(UUID.randomUUID().toString(),Instant.now(),Currency.Rial.toString(),"received",new RecipientAddressDTO("name","add",new CityName("tehran"),Country.IRAN),itemDTOS);
-        assertThat(orderDTO.asOrder()).isEqualTo(expectedOrder);
+       Order order = new Order(Instant.now(),Currency.Rial,new RecipientAddress("name","somewhere",new CityName("tehran"),Country.IRAN));
+       OrderDTO dto = OrderDTO.fromOrder(order);
+       assertThat(dto.equals(order));
     }
     @Test
     @DisplayName("Convert OrderReq to Order Domain")
