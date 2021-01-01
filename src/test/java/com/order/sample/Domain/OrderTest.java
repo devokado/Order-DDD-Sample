@@ -11,14 +11,12 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest
+
 public class OrderTest {
 
     @Mock
@@ -35,8 +33,6 @@ public class OrderTest {
     @Test
     @DisplayName("Create order item")
     public void createOrderItem(){
-//        OrderItem orderItem = new OrderItem(UUID.randomUUID(),"desc",100L);
-//        assertThat(orderItem.itemDescription().equals("desc"));
 
     }
     @Test
@@ -47,7 +43,22 @@ public class OrderTest {
         OrderDTO orderDTO = new OrderDTO(UUID.randomUUID().toString(),Instant.now(),Currency.Rial.toString(),"received",new RecipientAddressDTO("name","add",new CityName("tehran"),Country.IRAN),itemDTOS);
         assertThat(orderDTO.asOrder()).isEqualTo(expectedOrder);
     }
-
+    @Test
+    @DisplayName("Convert OrderReq to Order Domain")
+    public void ConvertOrderReqToOrderDomain(){
+        OrderReq req = new OrderReq();
+        req.setCurrency("Rial");
+        req.setName("Nejatian");
+        req.setAddressLine1("someWhere");
+        req.setCity("Tehran");
+        req.setCountry("IRAN");
+        req.setProductId("someThing");
+        req.setItemDescription("Something pretty expensive");
+        req.setItemPrice(100L);
+        req.setQuantity(2);
+        Order order = Order.toDomainModel(req);
+        assertThat(order.currency().equals(req.getCurrency()));
+    }
 
 
 }
