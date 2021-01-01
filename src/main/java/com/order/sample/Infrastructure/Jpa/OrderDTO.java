@@ -7,7 +7,6 @@ import com.order.sample.Domain.SeedWork.Enums.Currency;
 import javax.persistence.*;
 import java.time.Instant;
 import java.util.Set;
-import java.util.UUID;
 
 @Entity
 @Table(name = "orders")
@@ -49,5 +48,8 @@ public class OrderDTO {
     }
    public Order asOrder(){
         return new Order(orderedOn,Currency.valueOf(currency),shippingAddress.asRecipientAddress());
+    }
+    public static OrderDTO fromOrder(Order order){
+      return  new OrderDTO(order.id().toString(),order.orderedOn(),order.currency().toString(),order.state().toString(),new RecipientAddressDTO(order.shippingAddress().name(),order.shippingAddress().getAddressLine1(),order.shippingAddress().getCity(),order.shippingAddress().getCountry()),null);
     }
 }

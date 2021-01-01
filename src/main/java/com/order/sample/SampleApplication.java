@@ -15,9 +15,4 @@ public class SampleApplication {
 		SpringApplication.run(SampleApplication.class, args);
 
 	}
-	@Bean
-	public ModelMapper modelMapper(){
-		return new ModelMapper();
-	}
-
 }

@@ -20,8 +20,8 @@ public class OrderImpl implements OrderInterface {
 
     @Override
     public Order save(Order order) {
-       // OrderDTO dto = order.
-
+       OrderDTO dto = OrderDTO.fromOrder(order);
+       orderRepository.save(dto);
         return null;
     }
 

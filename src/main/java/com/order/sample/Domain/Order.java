@@ -8,6 +8,7 @@ import com.order.sample.Domain.SeedWork.Enums.Currency;
 import com.order.sample.Domain.SeedWork.Enums.OrderState;
 import com.order.sample.Domain.SeedWork.Geo.CityName;
 import com.order.sample.Domain.SeedWork.Geo.Country;
+import com.order.sample.Infrastructure.Jpa.OrderDTO;
 import com.order.sample.Presentation.Rest.Request.OrderReq;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
@@ -142,4 +143,5 @@ public class Order extends AbstractAggregateRoot<OrderId> implements Concurrency
 
         return new Order(Instant.now(),Currency.valueOf(req.getCurrency()),new RecipientAddress(req.getName(),req.getAddressLine1(),new CityName(req.getCity()),Country.valueOf(req.getCountry())));
     }
+
 }
