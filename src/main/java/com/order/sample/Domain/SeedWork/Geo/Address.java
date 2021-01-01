@@ -38,4 +38,16 @@ public class Address implements ValueObject {
     public Country getCountry() {
         return country;
     }
+
+    public void setAddressLine1(String addressLine1) {
+        this.addressLine1 = addressLine1;
+    }
+
+    public void setCity(CityName city) {
+        this.city = city;
+    }
+
+    public void setCountry(Country country) {
+        this.country = country;
+    }
 }

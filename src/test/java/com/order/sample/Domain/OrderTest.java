@@ -48,15 +48,6 @@ public class OrderTest {
         assertThat(orderDTO.asOrder()).isEqualTo(expectedOrder);
     }
 
-    @Test
-    @DisplayName("Model mapper")
-    public void modelMapperTest(){
-        Order order =new Order(Instant.now(),Currency.Rial,new RecipientAddress("antea","somewhere",new CityName("tehran"),Country.IRAN));
-        OrderReq req = modelMapper.map(order,OrderReq.class);
-        assertThat(req.getCurrency().equals(order.currency()));
 
-
-
-    }
 
 }

@@ -30,6 +30,7 @@ public class RecipientAddress extends Address {
         this.name = Objects.requireNonNull(name, "name must not be null");
     }
 
+
     @NonNull
     @JsonProperty("name")
     public String name() {

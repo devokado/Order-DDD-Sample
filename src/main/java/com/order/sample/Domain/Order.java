@@ -6,17 +6,14 @@ import com.order.sample.Domain.SeedWork.Base.ConcurrencySafeDomainObject;
 import com.order.sample.Domain.SeedWork.Base.DomainObjectId;
 import com.order.sample.Domain.SeedWork.Enums.Currency;
 import com.order.sample.Domain.SeedWork.Enums.OrderState;
-import com.order.sample.Infrastructure.Jpa.OrderDTO;
+import com.order.sample.Domain.SeedWork.Geo.CityName;
+import com.order.sample.Domain.SeedWork.Geo.Country;
 import com.order.sample.Presentation.Rest.Request.OrderReq;
-import lombok.Getter;
-import lombok.Setter;
-import org.modelmapper.Conditions;
-import org.modelmapper.ModelMapper;
-import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
+import javax.persistence.criteria.CriteriaBuilder;
 import java.time.Clock;
 import java.time.Instant;
 import java.util.HashSet;
@@ -139,27 +136,10 @@ public class Order extends AbstractAggregateRoot<OrderId> implements Concurrency
         return version;
     }
 
-    public void setVersion(Long version) {
-        this.version = version;
-    }
 
-    public void setState(OrderState state) {
-        this.state = state;
-    }
-
-    public void setStateChangeHistory(Set<OrderStateChange> stateChangeHistory) {
-        this.stateChangeHistory = stateChangeHistory;
-    }
-
-    public void setItems(Set<OrderItem> items) {
-        this.items = items;
-    }
 
     public static Order toDomainModel(OrderReq req){
-        ModelMapper modelMapper = new ModelMapper();
-        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);
-        Order order= modelMapper.map(req, Order.class);
-        modelMapper.getConfiguration();
-        return null;
+
+        return new Order(Instant.now(),Currency.valueOf(req.getCurrency()),new RecipientAddress(req.getName(),req.getAddressLine1(),new CityName(req.getCity()),Country.valueOf(req.getCountry())));
     }
 }
