@@ -21,7 +21,12 @@ public class RecipientAddressDTO extends Address {
         super(addressLine1, city, country);
         this.name = Objects.requireNonNull(name, "name must not be null");
     }
-   public RecipientAddress asRecipientAddress(){
+
+    public String getName() {
+        return name;
+    }
+
+    public RecipientAddress asRecipientAddress(){
         return new RecipientAddress(name,this.getAddressLine1(),this.getCity(),this.getCountry());
     }
 

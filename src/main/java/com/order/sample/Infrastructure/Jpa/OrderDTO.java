@@ -2,7 +2,9 @@ package com.order.sample.Infrastructure.Jpa;
 
 
 import com.order.sample.Domain.Order;
+import com.order.sample.Domain.RecipientAddress;
 import com.order.sample.Domain.SeedWork.Enums.Currency;
+import com.order.sample.Domain.SeedWork.Geo.CityName;
 
 import javax.persistence.*;
 import java.time.Instant;
@@ -46,10 +48,12 @@ public class OrderDTO {
         this.shippingAddress = shippingAddress;
         this.items = items;
     }
-   public Order asOrder(){
-        return new Order(orderedOn,Currency.valueOf(currency),shippingAddress.asRecipientAddress());
-    }
+
     public static OrderDTO fromOrder(Order order){
       return  new OrderDTO(order.id().toString(),order.orderedOn(),order.currency().toString(),order.state().toString(),new RecipientAddressDTO(order.shippingAddress().name(),order.shippingAddress().getAddressLine1(),order.shippingAddress().getCity(),order.shippingAddress().getCountry()),null);
     }
+    public  Order toOrder(){
+        return new Order(orderedOn,Currency.valueOf(currency),new RecipientAddress(shippingAddress.getName(),shippingAddress.getAddressLine1(),shippingAddress.getCity(),shippingAddress.getCountry()));
+    }
+
 }

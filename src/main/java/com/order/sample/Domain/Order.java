@@ -144,4 +144,5 @@ public class Order extends AbstractAggregateRoot<OrderId> implements Concurrency
         return new Order(Instant.now(),Currency.valueOf(req.getCurrency()),new RecipientAddress(req.getName(),req.getAddressLine1(),new CityName(req.getCity()),Country.valueOf(req.getCountry())));
     }
 
+
 }
