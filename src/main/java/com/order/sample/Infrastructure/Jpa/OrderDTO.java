@@ -18,9 +18,9 @@ public class OrderDTO {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private String id;
     @Column(name ="ordered_on",nullable = false)
-    private Instant orderedOn;
+    private static Instant orderedOn;
     @Column(name="order_currency",nullable = false)
-    private String currency;
+    private static String currency;
     @Column(name = "order_state", nullable = false)
     private String state;
     @Embedded
@@ -30,7 +30,7 @@ public class OrderDTO {
             @AttributeOverride(name = "city", column = @Column(name = "city", nullable = false)),
             @AttributeOverride(name = "country", column = @Column(name = "country", nullable = false))
     })
-    private RecipientAddressDTO shippingAddress;
+    private static RecipientAddressDTO shippingAddress;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JoinColumn(name = "order_id", nullable = false)
@@ -52,7 +52,7 @@ public class OrderDTO {
     public static OrderDTO fromOrder(Order order){
       return  new OrderDTO(order.id().toString(),order.orderedOn(),order.currency().toString(),order.state().toString(),new RecipientAddressDTO(order.shippingAddress().name(),order.shippingAddress().getAddressLine1(),order.shippingAddress().getCity(),order.shippingAddress().getCountry()),null);
     }
-    public  Order toOrder(){
+    public static Order toOrder(){
         return new Order(orderedOn,Currency.valueOf(currency),new RecipientAddress(shippingAddress.getName(),shippingAddress.getAddressLine1(),shippingAddress.getCity(),shippingAddress.getCountry()));
     }
 

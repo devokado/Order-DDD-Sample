@@ -58,6 +58,13 @@ public class OrderTest {
         Order order = Order.toDomainModel(req);
         assertThat(order.currency().equals(req.getCurrency()));
     }
+    @Test
+    @DisplayName("Convert DTO to Order")
+    public void convertDtoToOrder(){
+        OrderDTO dto = new OrderDTO(UUID.randomUUID().toString(),Instant.now(),"Rial","RECEIVED",new RecipientAddressDTO("name","someWhere",new CityName("tehran"),Country.IRAN),null);
+        Order order = dto.toOrder();
+        assertThat(order.equals(dto));
+    }
 
 
 }
