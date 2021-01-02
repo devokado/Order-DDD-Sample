@@ -4,11 +4,9 @@ package com.order.sample.Infrastructure.Jpa;
 import com.order.sample.Domain.Order;
 import com.order.sample.Domain.RecipientAddress;
 import com.order.sample.Domain.SeedWork.Enums.Currency;
-import org.springframework.lang.NonNull;
 
 import javax.persistence.*;
 import java.time.Instant;
-import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
@@ -47,12 +45,10 @@ public class OrderDTO {
         this.orderedOn = orderedOn;
         this.currency = currency;
         this.state = state;
-        setShippingAddress(shippingAddress);
+        this.shippingAddress =shippingAddress;
         this.items = items;
     }
-    private void setShippingAddress(@NonNull RecipientAddressDTO shippingAddress) {
-        this.shippingAddress = Objects.requireNonNull(shippingAddress, "shippingAddress must not be null");
-    }
+
 
     public static OrderDTO fromOrder(Order order){
       return  new OrderDTO(UUID.fromString(order.id().toUUID()),order.orderedOn(),order.currency().toString(),order.state().toString(),new RecipientAddressDTO(order.shippingAddress().name(),order.shippingAddress().getAddressLine1(),order.shippingAddress().getCity(),order.shippingAddress().getCountry()),null);
