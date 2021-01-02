@@ -32,11 +32,5 @@ public class RecipientAddressDTO extends Address {
         return name;
     }
 
-    public RecipientAddress asRecipientAddress(){
-        return new RecipientAddress(name,this.getAddressLine1(),this.getCity(),this.getCountry());
-    }
-
-
-
 
 }

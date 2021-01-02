@@ -5,6 +5,7 @@ import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Embeddable
 @MappedSuperclass
@@ -39,15 +40,28 @@ public class Address implements ValueObject {
         return country;
     }
 
-    public void setAddressLine1(String addressLine1) {
-        this.addressLine1 = addressLine1;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Address address = (Address) o;
+        return Objects.equals(addressLine1, address.addressLine1) &&
+                Objects.equals(city, address.city) &&
+                country == address.country;
     }
 
-    public void setCity(CityName city) {
-        this.city = city;
+    @Override
+    public int hashCode() {
+        return Objects.hash(addressLine1,city,country);
     }
-
-    public void setCountry(Country country) {
-        this.country = country;
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(addressLine1);
+        sb.append(", ");
+        sb.append(city);
+        sb.append(", ");
+        sb.append(country);
+        return sb.toString();
     }
 }

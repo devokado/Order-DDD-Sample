@@ -12,6 +12,7 @@ public class CityName implements ValueObject {
 
     public CityName(@NonNull  String name) {
         this.name = Objects.requireNonNull(name, "name must not be null");
+
     }
 
     @Override

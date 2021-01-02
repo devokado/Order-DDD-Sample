@@ -4,6 +4,7 @@ package com.order.sample.Infrastructure.Jpa;
 import com.order.sample.Domain.Order;
 import com.order.sample.Domain.RecipientAddress;
 import com.order.sample.Domain.SeedWork.Enums.Currency;
+import com.order.sample.Domain.SeedWork.Geo.CityName;
 
 import javax.persistence.*;
 import java.time.Instant;
