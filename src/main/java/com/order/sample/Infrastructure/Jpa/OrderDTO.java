@@ -4,9 +4,11 @@ package com.order.sample.Infrastructure.Jpa;
 import com.order.sample.Domain.Order;
 import com.order.sample.Domain.RecipientAddress;
 import com.order.sample.Domain.SeedWork.Enums.Currency;
+import org.springframework.lang.NonNull;
 
 import javax.persistence.*;
 import java.time.Instant;
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
@@ -30,7 +32,7 @@ public class OrderDTO {
             @AttributeOverride(name = "city", column = @Column(name = "city", nullable = false)),
             @AttributeOverride(name = "country", column = @Column(name = "country", nullable = false))
     })
-    private static RecipientAddressDTO shippingAddress;
+    private RecipientAddressDTO shippingAddress;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JoinColumn(name = "order_id", nullable = false)
@@ -45,8 +47,11 @@ public class OrderDTO {
         this.orderedOn = orderedOn;
         this.currency = currency;
         this.state = state;
-        this.shippingAddress = shippingAddress;
+        setShippingAddress(shippingAddress);
         this.items = items;
+    }
+    private void setShippingAddress(@NonNull RecipientAddressDTO shippingAddress) {
+        this.shippingAddress = Objects.requireNonNull(shippingAddress, "shippingAddress must not be null");
     }
 
     public static OrderDTO fromOrder(Order order){
