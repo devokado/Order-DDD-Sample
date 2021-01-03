@@ -11,20 +11,15 @@ import com.order.sample.Presentation.Rest.Request.OrderReq;
 import com.order.sample.Presentation.Rest.Response.OrderResponse;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.Instant;
 import java.util.*;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
-@RunWith(SpringRunner.class)
 @SpringBootTest
 public class OrderTest {
     @MockBean
@@ -84,7 +79,7 @@ public class OrderTest {
         OrderResponse res = OrderResponse.from(order);
         assertThat(res.equals(order));
     }
-    @org.junit.Test
+    @Test
     @DisplayName("Find all orders")
     public void findAllOrders(){
     List<OrderDTO> expectedList = new ArrayList<>();
@@ -95,8 +90,9 @@ public class OrderTest {
     expectedList.add(OrderDTO.fromOrder(order2));
         Mockito.when(orderRepository.findAll()).thenReturn(expectedList);
     List<Order> foundOrders = orderInterface.findAll();
-        assertNotNull(foundOrders);
-        assertEquals(2,foundOrders.size());
+
+        assertThat(!foundOrders.isEmpty());
+        assertThat(foundOrders.size() == 2);
     }
 
 }
