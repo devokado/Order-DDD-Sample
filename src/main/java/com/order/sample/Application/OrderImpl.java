@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class OrderImpl implements OrderInterface {
@@ -16,6 +17,8 @@ public class OrderImpl implements OrderInterface {
     public OrderImpl(OrderRepository orderRepository) {
         this.orderRepository = orderRepository;
     }
+
+
 
     @Override
     public Order save(Order order) {
@@ -32,10 +35,9 @@ public class OrderImpl implements OrderInterface {
 
     @Override
     public List<Order> findAll() {
-        return null;
-      //  return orderRepository.findAll()
-           //     .stream()
-          //      .map(OrderDTO::as);
+        return orderRepository.findAll()
+                .stream().map(OrderDTO::toOrder)
+                .collect(Collectors.toList());
     }
 
 

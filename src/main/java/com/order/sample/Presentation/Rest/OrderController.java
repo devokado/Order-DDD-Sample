@@ -7,6 +7,7 @@ import com.order.sample.Presentation.Rest.Response.OrderResponse;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/orders")
@@ -19,9 +20,12 @@ public class OrderController {
 
     @GetMapping
     public List<OrderResponse> findAll() {
-     //   List<Order> orders =  orderImpl.findAll();
-     // OrderResponse orderResponse=  orderImpl.findAll();
-        return null;
+       List<Order> orders =  orderInterface.findAll();
+       List<OrderResponse> responseList = orders
+               .stream()
+               .map(order -> OrderResponse.from(order))
+               .collect(Collectors.toList());
+        return responseList;
     }
     @PostMapping()
     public OrderResponse createOrder(@RequestBody OrderReq orderReq){

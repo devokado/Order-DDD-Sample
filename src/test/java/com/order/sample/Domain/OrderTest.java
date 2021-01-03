@@ -1,25 +1,38 @@
 package com.order.sample.Domain;
 
+import com.order.sample.Domain.Port.OrderInterface;
 import com.order.sample.Domain.SeedWork.Enums.Currency;
 import com.order.sample.Domain.SeedWork.Geo.CityName;
 import com.order.sample.Domain.SeedWork.Geo.Country;
 import com.order.sample.Infrastructure.Jpa.OrderDTO;
+import com.order.sample.Infrastructure.Jpa.OrderRepository;
 import com.order.sample.Infrastructure.Jpa.RecipientAddressDTO;
 import com.order.sample.Presentation.Rest.Request.OrderReq;
 import com.order.sample.Presentation.Rest.Response.OrderResponse;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-import org.modelmapper.ModelMapper;
+import org.junit.runner.RunWith;
+import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.junit4.SpringRunner;
+
 import java.time.Instant;
 import java.util.*;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
-
+@RunWith(SpringRunner.class)
+@SpringBootTest
 public class OrderTest {
+    @MockBean
+    OrderRepository orderRepository;
 
-    @Mock
-    private ModelMapper modelMapper;
+    @Autowired
+    OrderInterface orderInterface;
+
 
     @Test
     @DisplayName("Create domain Orders class Test")
@@ -71,6 +84,19 @@ public class OrderTest {
         OrderResponse res = OrderResponse.from(order);
         assertThat(res.equals(order));
     }
+    @org.junit.Test
+    @DisplayName("Find all orders")
+    public void findAllOrders(){
+    List<OrderDTO> expectedList = new ArrayList<>();
+    Order order1 = new Order(Instant.now(),Currency.Rial,new RecipientAddress("name1","somewhere1",new CityName("tehran1"),Country.IRAN));
+    Order order2 = new Order(Instant.now(),Currency.Rial,new RecipientAddress("name2","somewhere2",new CityName("tehran2"),Country.IRAN));
 
+    expectedList.add(OrderDTO.fromOrder(order1));
+    expectedList.add(OrderDTO.fromOrder(order2));
+        Mockito.when(orderRepository.findAll()).thenReturn(expectedList);
+    List<Order> foundOrders = orderInterface.findAll();
+        assertNotNull(foundOrders);
+        assertEquals(2,foundOrders.size());
+    }
 
 }
