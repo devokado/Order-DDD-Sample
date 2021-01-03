@@ -15,6 +15,10 @@ public class CityName implements ValueObject {
 
     }
 
+    public String getName() {
+        return name;
+    }
+
     @Override
     public int hashCode() {
         return Objects.hash(name);

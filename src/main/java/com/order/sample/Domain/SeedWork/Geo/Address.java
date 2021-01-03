@@ -2,7 +2,6 @@ package com.order.sample.Domain.SeedWork.Geo;
 
 import com.order.sample.Domain.SeedWork.Base.ValueObject;
 import org.springframework.lang.NonNull;
-import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import java.util.Objects;
