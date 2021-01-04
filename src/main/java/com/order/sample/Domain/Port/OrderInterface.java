@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface OrderInterface {
     Order save(Order order);
-    Optional<Order> findById(Long id);
+    Order findById(String id);
     List<Order> findAll();
     Order patch(Order order);
 
