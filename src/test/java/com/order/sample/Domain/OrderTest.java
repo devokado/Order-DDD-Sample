@@ -4,10 +4,10 @@ import com.order.sample.Domain.Port.OrderInterface;
 import com.order.sample.Domain.SeedWork.Enums.Currency;
 import com.order.sample.Domain.SeedWork.Geo.CityName;
 import com.order.sample.Domain.SeedWork.Geo.Country;
-import com.order.sample.Infrastructure.Jpa.OrderDTO;
-import com.order.sample.Infrastructure.Jpa.OrderRepository;
-import com.order.sample.Infrastructure.Jpa.RecipientAddressDTO;
-import com.order.sample.Presentation.Rest.Request.OrderReq;
+import com.order.sample.Infrastructure.Jpa.OrderEntity;
+import com.order.sample.Infrastructure.Jpa.Port.OrderRepository;
+import com.order.sample.Infrastructure.Jpa.RecipientAddressEntity;
+import com.order.sample.Presentation.Rest.Request.OrderDTO;
 import com.order.sample.Presentation.Rest.Response.OrderResponse;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -44,33 +44,33 @@ public class OrderTest {
     }
     @Test
     @DisplayName("Convert order to DTO")
-    public void ConvertOrderToDTO(){
+    public void ConvertOrderToEntity(){
        Order order = new Order(Instant.now(),Currency.Rial,new RecipientAddress("name","somewhere",new CityName("tehran"),Country.IRAN));
-       OrderDTO dto = OrderDTO.fromOrder(order);
-       assertThat(dto.equals(order));
+       OrderEntity entity = OrderEntity.fromOrder(order);
+       assertThat(entity.equals(order));
     }
     @Test
     @DisplayName("Convert OrderReq to Order Domain")
-    public void ConvertOrderReqToOrderDomain(){
-        OrderReq req = new OrderReq();
-        req.setCurrency("Rial");
-        req.setName("Nejatian");
-        req.setAddressLine1("someWhere");
-        req.setCity("Tehran");
-        req.setCountry("IRAN");
-        req.setProductId("someThing");
-        req.setItemDescription("Something pretty expensive");
-        req.setItemPrice(100L);
-        req.setQuantity(2);
-        Order order = Order.toDomainModel(req);
-        assertThat(order.currency().equals(req.getCurrency()));
+    public void ConvertOrderDTOToOrderDomain(){
+        OrderDTO dto = new OrderDTO();
+        dto.setCurrency("Rial");
+        dto.setName("Nejatian");
+        dto.setAddressLine1("someWhere");
+        dto.setCity("Tehran");
+        dto.setCountry("IRAN");
+        dto.setProductId("someThing");
+        dto.setItemDescription("Something pretty expensive");
+        dto.setItemPrice(100L);
+        dto.setQuantity(2);
+        Order order = Order.toDomainModel(dto);
+        assertThat(order.currency().equals(dto.getCurrency()));
     }
     @Test
     @DisplayName("Convert DTO to Order")
-    public void convertDtoToOrder(){
-        OrderDTO dto = new OrderDTO(UUID.randomUUID(),Instant.now(),"Rial","RECEIVED",new RecipientAddressDTO("name","someWhere",new CityName("tehran"),Country.IRAN),null);
-        Order order = dto.toOrder();
-        assertThat(order.equals(dto));
+    public void convertEntityToOrder(){
+        OrderEntity entity = new OrderEntity(UUID.randomUUID(),Instant.now(),"Rial","RECEIVED",new RecipientAddressEntity("name","someWhere",new CityName("tehran"),Country.IRAN),null);
+        Order order = entity.toOrder();
+        assertThat(order.equals(entity));
     }
     @Test
     @DisplayName("Convert Order to OrderResponse")
@@ -82,12 +82,12 @@ public class OrderTest {
     @Test
     @DisplayName("Find all orders")
     public void findAllOrders(){
-    List<OrderDTO> expectedList = new ArrayList<>();
+    List<OrderEntity> expectedList = new ArrayList<>();
     Order order1 = new Order(Instant.now(),Currency.Rial,new RecipientAddress("name1","somewhere1",new CityName("tehran1"),Country.IRAN));
     Order order2 = new Order(Instant.now(),Currency.Rial,new RecipientAddress("name2","somewhere2",new CityName("tehran2"),Country.IRAN));
 
-    expectedList.add(OrderDTO.fromOrder(order1));
-    expectedList.add(OrderDTO.fromOrder(order2));
+    expectedList.add(OrderEntity.fromOrder(order1));
+    expectedList.add(OrderEntity.fromOrder(order2));
         Mockito.when(orderRepository.findAll()).thenReturn(expectedList);
     List<Order> foundOrders = orderInterface.findAll();
 

@@ -4,7 +4,6 @@ package com.order.sample.Infrastructure.Jpa;
 import com.order.sample.Domain.Order;
 import com.order.sample.Domain.RecipientAddress;
 import com.order.sample.Domain.SeedWork.Enums.Currency;
-import com.order.sample.Domain.SeedWork.Geo.CityName;
 
 import javax.persistence.*;
 import java.time.Instant;
@@ -13,7 +12,7 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "orders")
-public class OrderDTO {
+public class OrderEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -31,17 +30,17 @@ public class OrderDTO {
             @AttributeOverride(name = "city", column = @Column(name = "city", nullable = false)),
             @AttributeOverride(name = "country", column = @Column(name = "country", nullable = false))
     })
-    private RecipientAddressDTO shippingAddress;
+    private RecipientAddressEntity shippingAddress;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JoinColumn(name = "order_id", nullable = false)
-    private Set<OrderItemDTO> items;
+    private Set<OrderItemEntity> items;
 
     @SuppressWarnings("unused")
-    public OrderDTO() {
+    public OrderEntity() {
     }
 
-    public OrderDTO(UUID id, Instant orderedOn, String currency, String state, RecipientAddressDTO shippingAddress, Set<OrderItemDTO> items) {
+    public OrderEntity(UUID id, Instant orderedOn, String currency, String state, RecipientAddressEntity shippingAddress, Set<OrderItemEntity> items) {
         this.id = id;
         this.orderedOn = orderedOn;
         this.currency = currency;
@@ -51,8 +50,8 @@ public class OrderDTO {
     }
 
 
-    public static OrderDTO fromOrder(Order order){
-      return  new OrderDTO(UUID.fromString(order.id().toUUID()),order.orderedOn(),order.currency().toString(),order.state().toString(),new RecipientAddressDTO(order.shippingAddress().name(),order.shippingAddress().getAddressLine1(),order.shippingAddress().getCity(),order.shippingAddress().getCountry()),null);
+    public static OrderEntity fromOrder(Order order){
+      return  new OrderEntity(UUID.fromString(order.id().toUUID()),order.orderedOn(),order.currency().toString(),order.state().toString(),new RecipientAddressEntity(order.shippingAddress().name(),order.shippingAddress().getAddressLine1(),order.shippingAddress().getCity(),order.shippingAddress().getCountry()),null);
     }
     public Order toOrder(){
         return new Order(orderedOn,Currency.valueOf(currency),new RecipientAddress(shippingAddress.getName(),shippingAddress.getAddressLine1(),shippingAddress.getCity(),shippingAddress.getCountry()));

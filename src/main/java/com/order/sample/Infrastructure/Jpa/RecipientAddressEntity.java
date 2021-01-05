@@ -15,15 +15,15 @@ import java.util.Objects;
 @Embeddable
 @Getter
 @Setter
-public class RecipientAddressDTO extends Address {
+public class RecipientAddressEntity extends Address {
     @Column(name = "shipping_name")
     private String name;
 
     @SuppressWarnings("unused") // Used by JPA only.
-    public RecipientAddressDTO() {
+    public RecipientAddressEntity() {
     }
-    public RecipientAddressDTO(@NonNull String name, @NonNull String addressLine1,
-                            @NonNull CityName city, @NonNull Country country) {
+    public RecipientAddressEntity(@NonNull String name, @NonNull String addressLine1,
+                                  @NonNull CityName city, @NonNull Country country) {
         super(addressLine1, city, country);
         this.name = Objects.requireNonNull(name, "name must not be null");
     }

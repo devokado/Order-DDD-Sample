@@ -2,8 +2,8 @@ package com.order.sample.Application;
 
 import com.order.sample.Domain.Order;
 import com.order.sample.Domain.Port.OrderInterface;
-import com.order.sample.Infrastructure.Jpa.OrderDTO;
-import com.order.sample.Infrastructure.Jpa.OrderRepository;
+import com.order.sample.Infrastructure.Jpa.OrderEntity;
+import com.order.sample.Infrastructure.Jpa.Port.OrderRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -25,15 +25,15 @@ public class OrderImpl implements OrderInterface {
 
     @Override
     public Order save(Order order) {
-       OrderDTO dto = OrderDTO.fromOrder(order);
-       OrderDTO fromDb = orderRepository.save(dto);
+       OrderEntity dto = OrderEntity.fromOrder(order);
+       OrderEntity fromDb = orderRepository.save(dto);
        Order orderRes = fromDb.toOrder();
         return orderRes;
     }
 
     @Override
     public Order findById(String id) {
-        Optional<OrderDTO> dto = orderRepository.findById(UUID.fromString(id));
+        Optional<OrderEntity> dto = orderRepository.findById(UUID.fromString(id));
         Order order;
         if ((dto.isPresent())) {
             order = dto.get().toOrder();
@@ -48,7 +48,7 @@ public class OrderImpl implements OrderInterface {
     @Override
     public List<Order> findAll() {
         return orderRepository.findAll()
-                .stream().map(OrderDTO::toOrder)
+                .stream().map(OrderEntity::toOrder)
                 .collect(Collectors.toList());
     }
 

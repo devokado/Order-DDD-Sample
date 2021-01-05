@@ -7,7 +7,7 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "order_item", uniqueConstraints = @UniqueConstraint(columnNames = {"order_id"}))
-public class OrderItemDTO {
+public class OrderItemEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;

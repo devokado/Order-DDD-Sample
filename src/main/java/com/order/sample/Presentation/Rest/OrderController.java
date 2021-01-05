@@ -2,7 +2,7 @@ package com.order.sample.Presentation.Rest;
 
 import com.order.sample.Domain.Order;
 import com.order.sample.Domain.Port.OrderInterface;
-import com.order.sample.Presentation.Rest.Request.OrderReq;
+import com.order.sample.Presentation.Rest.Request.OrderDTO;
 import com.order.sample.Presentation.Rest.Response.OrderResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,8 +21,8 @@ public class OrderController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createOrder(@RequestBody OrderReq orderReq){
-        Order order = orderInterface.save(Order.toDomainModel(orderReq));
+    public ResponseEntity<?> createOrder(@RequestBody OrderDTO orderDTO){
+        Order order = orderInterface.save(Order.toDomainModel(orderDTO));
         OrderResponse response = OrderResponse.from(order);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }

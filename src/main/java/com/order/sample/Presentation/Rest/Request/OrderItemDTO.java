@@ -1,13 +1,11 @@
 package com.order.sample.Presentation.Rest.Request;
 
-import com.order.sample.Domain.Order;
 import com.order.sample.Domain.Product;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import java.io.Serializable;
 
-public class OrderItemReq implements Serializable {
+public class OrderItemDTO {
     @NotNull
     private Product product;
     @Min(1)
@@ -28,7 +26,6 @@ public class OrderItemReq implements Serializable {
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
-
 
 
 }

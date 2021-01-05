@@ -14,7 +14,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OrderReq implements Serializable {
+public class OrderDTO implements Serializable {
 
     private String currency;
     private String name;
