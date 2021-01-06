@@ -49,6 +49,9 @@ public class OrderEntity {
         this.items = items;
     }
 
+    public UUID getId() {
+        return id;
+    }
 
     public static OrderEntity fromOrder(Order order){
       return  new OrderEntity(UUID.fromString(order.id().toUUID()),order.orderedOn(),order.currency().toString(),order.state().toString(),new RecipientAddressEntity(order.shippingAddress().name(),order.shippingAddress().getAddressLine1(),order.shippingAddress().getCity(),order.shippingAddress().getCountry()),null);

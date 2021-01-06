@@ -1,5 +1,6 @@
 package com.order.sample.Infrastructure.Jpa;
 
+import com.order.sample.Domain.OrderItem;
 import com.order.sample.Domain.SeedWork.Enums.Currency;
 
 import javax.persistence.*;
@@ -16,10 +17,24 @@ public class OrderItemEntity {
     @Column(name = "item_description", nullable = false)
     private String itemDescription;
     @Column(name = "item_price", nullable = false)
-    private int itemPrice;
-    @Column(name = "item_currency", nullable = false)
-    @Enumerated(EnumType.STRING)
-    private Currency itemPriceCurrency;
+    private Long itemPrice;
     @Column(name = "qty", nullable = false)
     private int quantity;
+
+    public OrderItemEntity() {
+    }
+
+    public OrderItemEntity(UUID id, UUID productId, String itemDescription, Long itemPrice, int quantity) {
+        this.id = id;
+        this.productId = productId;
+        this.itemDescription = itemDescription;
+        this.itemPrice = itemPrice;
+        this.quantity = quantity;
+    }
+    public static OrderItemEntity  fromOrderItem(OrderItem orderItem){
+        return new OrderItemEntity(UUID.fromString(orderItem.id().toUUID()),UUID.fromString(orderItem.productId().toUUID()),orderItem.itemDescription(),orderItem.itemPrice(),orderItem.quantity());
+    }
+    public static OrderItem toOrderItem(){
+        return new OrderItem();
+    }
 }

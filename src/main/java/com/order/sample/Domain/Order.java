@@ -106,8 +106,7 @@ public class Order extends AbstractAggregateRoot<OrderId> implements Concurrency
     @NonNull
     public OrderItem addItem(@NonNull Product product, int qty) {
         Objects.requireNonNull(product, "product must not be null");
-        var item = new OrderItem(product.id(), product.name(),product.price());
-        item.setQuantity(qty);
+        var item = new OrderItem(product.id(), product.name(),product.price(),qty);
         items.add(item);
         return item;
     }

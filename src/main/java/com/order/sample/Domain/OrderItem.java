@@ -14,17 +14,17 @@ public class OrderItem extends AbstractAggregateRoot<OrderItemId> {
     private ProductId productId;
     private String itemDescription;
     private Long itemPrice;
-    private Currency itemPriceCurrency;
     private Integer quantity;
 
     public OrderItem() {
     }
 
-    OrderItem(@NonNull ProductId productId, @NonNull String itemDescription, @NonNull Long itemPrice) {
+    OrderItem(@NonNull ProductId productId, @NonNull String itemDescription, @NonNull Long itemPrice,Integer quantity) {
         super(DomainObjectId.randomId(OrderItemId.class));
         setProductId(productId);
         setItemDescription(itemDescription);
         setItemPrice(itemPrice);
+        setQuantity(quantity);
     }
     @NonNull
     @JsonProperty("productId")

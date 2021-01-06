@@ -1,10 +1,12 @@
 package com.order.sample.Domain;
 
 import com.order.sample.Domain.Port.OrderInterface;
+import com.order.sample.Domain.SeedWork.Base.DomainObjectId;
 import com.order.sample.Domain.SeedWork.Enums.Currency;
 import com.order.sample.Domain.SeedWork.Geo.CityName;
 import com.order.sample.Domain.SeedWork.Geo.Country;
 import com.order.sample.Infrastructure.Jpa.OrderEntity;
+import com.order.sample.Infrastructure.Jpa.OrderItemEntity;
 import com.order.sample.Infrastructure.Jpa.Port.OrderRepository;
 import com.order.sample.Infrastructure.Jpa.RecipientAddressEntity;
 import com.order.sample.Presentation.Rest.Request.OrderDTO;
@@ -37,11 +39,7 @@ public class OrderTest {
         assertThat(newOrder.id() != null);
 
     }
-    @Test
-    @DisplayName("Create order item")
-    public void createOrderItem(){
 
-    }
     @Test
     @DisplayName("Convert order to DTO")
     public void ConvertOrderToEntity(){
@@ -70,7 +68,9 @@ public class OrderTest {
     public void convertEntityToOrder(){
         OrderEntity entity = new OrderEntity(UUID.randomUUID(),Instant.now(),"Rial","RECEIVED",new RecipientAddressEntity("name","someWhere",new CityName("tehran"),Country.IRAN),null);
         Order order = entity.toOrder();
-        assertThat(order.equals(entity));
+        System.out.println(order.id().toUUID());
+        System.out.println(entity.getId());
+        assertThat(UUID.fromString(order.id().toUUID()).compareTo(entity.getId()));
     }
     @Test
     @DisplayName("Convert Order to OrderResponse")
@@ -93,6 +93,30 @@ public class OrderTest {
 
         assertThat(!foundOrders.isEmpty());
         assertThat(foundOrders.size() == 2);
+    }
+
+    @Test
+    @DisplayName("Create orderItem")
+    public void createOrderItem(){
+        ProductId productId = DomainObjectId.randomId(ProductId.class);
+        OrderItem orderItem = new OrderItem(productId,"Toothpaste",100L,10);
+        assertThat(orderItem.id() != null);
+
+    }
+    @Test
+    @DisplayName("Convert OrderItem to OrderItem Entity")
+    public void convertOrderItemToOrderItemEntity(){
+        ProductId productId = DomainObjectId.randomId(ProductId.class);
+        OrderItem orderItem = new OrderItem(productId,"Toothpaste",100L,10);
+        OrderItemEntity entity = OrderItemEntity.fromOrderItem(orderItem);
+        assertThat(entity.equals(orderItem));
+    }
+    @Test
+    @DisplayName("Convert OrderItem Entity to OrderItem")
+    public void convertOrderItemEntityToOrderItem(){
+        ProductId productId = DomainObjectId.randomId(ProductId.class);
+        OrderItemEntity entity = new OrderItemEntity(UUID.randomUUID(),UUID.fromString(productId.toUUID()),"Item desc",10L,2);
+        //OrderItem item =
     }
 
 }

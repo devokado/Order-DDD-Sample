@@ -7,16 +7,26 @@ import javax.validation.constraints.NotNull;
 
 public class OrderItemDTO {
     @NotNull
-    private Product product;
+    private String productId;
+    @NotNull
+    private String productName;
     @Min(1)
     private int quantity = 1;
 
-    public Product getProduct() {
-        return product;
+    public String getProductId() {
+        return productId;
     }
 
-    public void setProduct(Product product) {
-        this.product = product;
+    public void setProductId(String productId) {
+        this.productId = productId;
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
     }
 
     public int getQuantity() {
