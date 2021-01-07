@@ -21,6 +21,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import java.time.Instant;
 import java.util.*;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertEquals;
 
 @SpringBootTest
 public class OrderTest {
@@ -68,9 +69,7 @@ public class OrderTest {
     public void convertEntityToOrder(){
         OrderEntity entity = new OrderEntity(UUID.randomUUID(),Instant.now(),"Rial","RECEIVED",new RecipientAddressEntity("name","someWhere",new CityName("tehran"),Country.IRAN),null);
         Order order = entity.toOrder();
-        System.out.println(order.id().toUUID());
-        System.out.println(entity.getId());
-        assertThat(UUID.fromString(order.id().toUUID()).compareTo(entity.getId()));
+       assertEquals(entity.getId(),order.id());
     }
     @Test
     @DisplayName("Convert Order to OrderResponse")
