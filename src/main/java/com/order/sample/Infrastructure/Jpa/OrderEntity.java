@@ -4,6 +4,7 @@ package com.order.sample.Infrastructure.Jpa;
 import com.order.sample.Domain.Order;
 import com.order.sample.Domain.RecipientAddress;
 import com.order.sample.Domain.SeedWork.Enums.Currency;
+import com.order.sample.Domain.SeedWork.Enums.OrderState;
 
 import javax.persistence.*;
 import java.time.Instant;
@@ -57,7 +58,8 @@ public class OrderEntity {
       return  new OrderEntity(UUID.fromString(order.id().toUUID()),order.orderedOn(),order.currency().toString(),order.state().toString(),new RecipientAddressEntity(order.shippingAddress().name(),order.shippingAddress().getAddressLine1(),order.shippingAddress().getCity(),order.shippingAddress().getCountry()),null);
     }
     public Order toOrder(){
-        return new Order(orderedOn,Currency.valueOf(currency),new RecipientAddress(shippingAddress.getName(),shippingAddress.getAddressLine1(),shippingAddress.getCity(),shippingAddress.getCountry()));
+        return new Order(id, orderedOn, Currency.valueOf(currency), OrderState.valueOf(state) ,new RecipientAddress(shippingAddress.getName(),shippingAddress.getAddressLine1(),shippingAddress.getCity(),shippingAddress.getCountry()));
     }
+
 
 }

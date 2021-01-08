@@ -18,6 +18,7 @@ import java.time.Instant;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Stream;
 
 
@@ -43,6 +44,14 @@ public class Order extends AbstractAggregateRoot<OrderId> implements Concurrency
         setOrderedOn(orderedOn);
         setCurrency(currency);
         setState(OrderState.RECEIVED, orderedOn);
+        setShippingAddress(recipientAddress);
+    }
+    public Order(UUID orderId, Instant orderedOn, Currency currency, OrderState state, RecipientAddress recipientAddress){
+        super(new OrderId(orderId.toString()));
+        this.stateChangeHistory = new HashSet<>();
+        setOrderedOn(orderedOn);
+        setCurrency(currency);
+        setState(state,orderedOn);
         setShippingAddress(recipientAddress);
     }
     @NonNull

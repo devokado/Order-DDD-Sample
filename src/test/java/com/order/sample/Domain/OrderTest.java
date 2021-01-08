@@ -69,7 +69,7 @@ public class OrderTest {
     public void convertEntityToOrder(){
         OrderEntity entity = new OrderEntity(UUID.randomUUID(),Instant.now(),"Rial","RECEIVED",new RecipientAddressEntity("name","someWhere",new CityName("tehran"),Country.IRAN),null);
         Order order = entity.toOrder();
-       assertEquals(entity.getId(),order.id());
+       assertEquals(entity.getId(),UUID.fromString(order.id().toUUID()));
     }
     @Test
     @DisplayName("Convert Order to OrderResponse")
