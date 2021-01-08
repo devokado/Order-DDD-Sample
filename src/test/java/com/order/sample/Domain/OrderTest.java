@@ -108,7 +108,7 @@ public class OrderTest {
         ProductId productId = DomainObjectId.randomId(ProductId.class);
         OrderItem orderItem = new OrderItem(productId,"Toothpaste",100L,10);
         OrderItemEntity entity = OrderItemEntity.fromOrderItem(orderItem);
-        assertThat(entity.equals(orderItem));
+        assertEquals(UUID.fromString(orderItem.id().toUUID()),entity.getId());
     }
     @Test
     @DisplayName("Convert OrderItem Entity to OrderItem")
@@ -118,6 +118,7 @@ public class OrderTest {
         OrderItem item = entity.toOrderItem();
         assertEquals(entity.getId(),UUID.fromString(item.id().toUUID()));
     }
+
 
 
 
