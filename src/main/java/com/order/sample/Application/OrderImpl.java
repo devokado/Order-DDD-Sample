@@ -1,6 +1,7 @@
 package com.order.sample.Application;
 
 import com.order.sample.Domain.Order;
+import com.order.sample.Domain.OrderId;
 import com.order.sample.Domain.Port.OrderInterface;
 import com.order.sample.Infrastructure.Jpa.OrderEntity;
 import com.order.sample.Infrastructure.Jpa.Port.OrderRepository;
@@ -32,8 +33,8 @@ public class OrderImpl implements OrderInterface {
     }
 
     @Override
-    public Order findById(String id) {
-        Optional<OrderEntity> dto = orderRepository.findById(UUID.fromString(id));
+    public Order findById(OrderId id) {
+        Optional<OrderEntity> dto = orderRepository.findById(UUID.fromString(id.toUUID()));
         Order order;
         if ((dto.isPresent())) {
             order = dto.get().toOrder();

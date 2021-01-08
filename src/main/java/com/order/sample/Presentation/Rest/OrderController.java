@@ -1,6 +1,7 @@
 package com.order.sample.Presentation.Rest;
 
 import com.order.sample.Domain.Order;
+import com.order.sample.Domain.OrderId;
 import com.order.sample.Domain.Port.OrderInterface;
 import com.order.sample.Presentation.Rest.Request.OrderDTO;
 import com.order.sample.Presentation.Rest.Response.OrderResponse;
@@ -39,7 +40,7 @@ public class OrderController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> findById(@PathVariable String id){
-        Order order = orderInterface.findById(id);
+        Order order = orderInterface.findById(new OrderId(id));
         OrderResponse response = OrderResponse.from(order);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }

@@ -1,5 +1,6 @@
 package com.order.sample.Infrastructure.Jpa.Port;
 
+import com.order.sample.Domain.OrderId;
 import com.order.sample.Infrastructure.Jpa.OrderEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
