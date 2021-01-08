@@ -1,6 +1,7 @@
 package com.order.sample.Infrastructure.Jpa;
 
 import com.order.sample.Domain.OrderItem;
+import com.order.sample.Domain.ProductId;
 import com.order.sample.Domain.SeedWork.Enums.Currency;
 
 import javax.persistence.*;
@@ -31,10 +32,15 @@ public class OrderItemEntity {
         this.itemPrice = itemPrice;
         this.quantity = quantity;
     }
+
+    public UUID getId() {
+        return id;
+    }
+
     public static OrderItemEntity  fromOrderItem(OrderItem orderItem){
         return new OrderItemEntity(UUID.fromString(orderItem.id().toUUID()),UUID.fromString(orderItem.productId().toUUID()),orderItem.itemDescription(),orderItem.itemPrice(),orderItem.quantity());
     }
-    public static OrderItem toOrderItem(){
-        return new OrderItem();
+    public  OrderItem toOrderItem(){
+        return new OrderItem(id,new ProductId(productId.toString()),itemDescription,itemPrice,quantity);
     }
 }

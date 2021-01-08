@@ -3,14 +3,24 @@ package com.order.sample.Presentation.Rest.Response;
 import com.order.sample.Domain.Order;
 
 public class OrderResponse {
+    private String id;
     private String orderedOn;
     private String currency;
     private String state;
 
-    public OrderResponse(String orderedOn, String currency, String state) {
+    public OrderResponse(String id,String orderedOn, String currency, String state) {
+        this.id = id;
         this.orderedOn = orderedOn;
         this.currency = currency;
         this.state = state;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getOrderedOn() {
@@ -37,6 +47,6 @@ public class OrderResponse {
         this.state = state;
     }
     public static OrderResponse from(Order order){
-        return new OrderResponse(order.orderedOn().toString(),order.currency().name(),order.state().name());
+        return new OrderResponse(order.id().toUUID(),order.orderedOn().toString(),order.currency().name(),order.state().name());
     }
 }

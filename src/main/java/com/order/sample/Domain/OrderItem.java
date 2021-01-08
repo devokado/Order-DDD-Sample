@@ -3,7 +3,6 @@ package com.order.sample.Domain;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.order.sample.Domain.SeedWork.Base.AbstractAggregateRoot;
 import com.order.sample.Domain.SeedWork.Base.DomainObjectId;
-import com.order.sample.Domain.SeedWork.Enums.Currency;
 import org.springframework.lang.NonNull;
 
 import java.util.Objects;
@@ -19,13 +18,21 @@ public class OrderItem extends AbstractAggregateRoot<OrderItemId> {
     public OrderItem() {
     }
 
-    OrderItem(@NonNull ProductId productId, @NonNull String itemDescription, @NonNull Long itemPrice,Integer quantity) {
+   public OrderItem(@NonNull ProductId productId, @NonNull String itemDescription, @NonNull Long itemPrice,Integer quantity) {
         super(DomainObjectId.randomId(OrderItemId.class));
         setProductId(productId);
         setItemDescription(itemDescription);
         setItemPrice(itemPrice);
         setQuantity(quantity);
     }
+    public OrderItem(UUID orderItemId, @NonNull ProductId productId, @NonNull String itemDescription, @NonNull Long itemPrice, Integer quantity){
+        super(new OrderItemId(orderItemId.toString()));
+        setProductId(productId);
+        setItemDescription(itemDescription);
+        setItemPrice(itemPrice);
+        setQuantity(quantity);
+    }
+
     @NonNull
     @JsonProperty("productId")
     public ProductId productId() {

@@ -115,7 +115,10 @@ public class OrderTest {
     public void convertOrderItemEntityToOrderItem(){
         ProductId productId = DomainObjectId.randomId(ProductId.class);
         OrderItemEntity entity = new OrderItemEntity(UUID.randomUUID(),UUID.fromString(productId.toUUID()),"Item desc",10L,2);
-        //OrderItem item =
+        OrderItem item = entity.toOrderItem();
+        assertEquals(entity.getId(),UUID.fromString(item.id().toUUID()));
     }
+
+
 
 }
