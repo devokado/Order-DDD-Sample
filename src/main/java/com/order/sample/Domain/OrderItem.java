@@ -3,6 +3,7 @@ package com.order.sample.Domain;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.order.sample.Domain.SeedWork.Base.AbstractAggregateRoot;
 import com.order.sample.Domain.SeedWork.Base.DomainObjectId;
+import com.order.sample.Presentation.Rest.Request.OrderItemDTO;
 import org.springframework.lang.NonNull;
 
 import java.util.Objects;
@@ -72,6 +73,10 @@ public class OrderItem extends AbstractAggregateRoot<OrderItemId> {
             throw new IllegalArgumentException("Quantity cannot be negative");
         }
         this.quantity = quantity;
+    }
+
+    public static OrderItem toDomainModel(OrderItemDTO req){
+        return new OrderItem(new ProductId(req.getProductId()),req.getItemDescription(),req.getPrice(),req.getQuantity());
     }
 
 }

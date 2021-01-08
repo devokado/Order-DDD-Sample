@@ -1,18 +1,6 @@
 package com.order.sample.Presentation.Rest.Request;
 
-import com.order.sample.Domain.Order;
-import com.order.sample.Domain.RecipientAddress;
-import com.order.sample.Domain.SeedWork.Enums.Currency;
-import javassist.compiler.ast.StringL;
-
-
-import javax.validation.Valid;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
 
 public class OrderDTO implements Serializable {
 

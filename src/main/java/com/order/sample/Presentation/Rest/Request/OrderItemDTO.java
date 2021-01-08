@@ -12,6 +12,8 @@ public class OrderItemDTO {
     private String productName;
     @Min(1)
     private int quantity = 1;
+    private String itemDescription;
+    private Long price;
 
     public String getProductId() {
         return productId;
@@ -19,6 +21,22 @@ public class OrderItemDTO {
 
     public void setProductId(String productId) {
         this.productId = productId;
+    }
+
+    public String getItemDescription() {
+        return itemDescription;
+    }
+
+    public void setItemDescription(String itemDescription) {
+        this.itemDescription = itemDescription;
+    }
+
+    public Long getPrice() {
+        return price;
+    }
+
+    public void setPrice(Long price) {
+        this.price = price;
     }
 
     public String getProductName() {
