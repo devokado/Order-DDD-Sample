@@ -37,13 +37,14 @@ public class OrderTest {
     public void createOrdersTest(){
         RecipientAddress recipientAddress = new RecipientAddress("name","address",new CityName("tehran"), Country.IRAN);
         Order newOrder = new Order(Instant.now(),Currency.Rial,recipientAddress);
+        System.out.println(newOrder);
         assertThat(newOrder.id() != null);
 
     }
 
     @Test
-    @DisplayName("Convert order to DTO")
-    public void ConvertOrderToEntity(){
+    @DisplayName("Convert order to Entity")
+    public void ConvertOrderDomainToEntity(){
        Order order = new Order(Instant.now(),Currency.Rial,new RecipientAddress("name","somewhere",new CityName("tehran"),Country.IRAN));
        OrderEntity entity = OrderEntity.fromOrder(order);
        assertThat(entity.equals(order));
@@ -117,6 +118,18 @@ public class OrderTest {
         OrderItemEntity entity = new OrderItemEntity(UUID.randomUUID(),UUID.fromString(productId.toUUID()),"Item desc",10L,2);
         OrderItem item = entity.toOrderItem();
         assertEquals(entity.getId(),UUID.fromString(item.id().toUUID()));
+    }
+    @Test
+    @DisplayName("Test start order process")
+    public void startProcessingOrder(){
+        OrderEntity entity = new OrderEntity(UUID.randomUUID(),Instant.now(),"Rial","RECEIVED",new RecipientAddressEntity("name","someWhere",new CityName("tehran"),Country.IRAN),null);
+
+        Order order = new Order();
+        order =  entity.toOrder();
+        order.startProcessing(Instant.now());
+
+        System.out.println(order.state());
+
     }
 
 

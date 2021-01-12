@@ -4,8 +4,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.order.sample.Domain.SeedWork.Enums.OrderState;
 import org.springframework.lang.NonNull;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import java.time.Instant;
@@ -22,7 +20,7 @@ public class OrderStateChange {
     private OrderStateChange() {
     }
 
-    OrderStateChange(@NonNull Instant changedOn, @NonNull OrderState state) {
+   public OrderStateChange(@NonNull Instant changedOn, @NonNull OrderState state) {
         this.changedOn = Objects.requireNonNull(changedOn, "changedOn must not be null");
         this.state = Objects.requireNonNull(state, "state must not be null");
     }

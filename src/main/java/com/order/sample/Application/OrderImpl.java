@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -57,5 +58,23 @@ public class OrderImpl implements OrderInterface {
     @Override
     public Order patch(Order order) {
         return null;
+    }
+
+    @Override
+    public Order startProcessing(OrderId id) {
+        Optional<OrderEntity> dto = orderRepository.findById(UUID.fromString(id.toUUID()));
+        OrderEntity entity = new OrderEntity();
+        Order order = new Order();
+        if(dto.isPresent()){
+            order = dto.get().toOrder();
+            order.startProcessing(Instant.now());
+            entity = OrderEntity.fromOrder(order);
+            orderRepository.save(entity);
+        }
+        else
+        {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Unable to find resource");
+        }
+        return order;
     }
 }

@@ -1,6 +1,5 @@
 package com.order.sample.Infrastructure.Jpa;
 
-import com.order.sample.Domain.RecipientAddress;
 import com.order.sample.Domain.SeedWork.Geo.Address;
 import com.order.sample.Domain.SeedWork.Geo.CityName;
 import com.order.sample.Domain.SeedWork.Geo.Country;

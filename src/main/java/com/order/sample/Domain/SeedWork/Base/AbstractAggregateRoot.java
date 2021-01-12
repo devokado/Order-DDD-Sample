@@ -36,6 +36,7 @@ public abstract class AbstractAggregateRoot<ID extends DomainObjectId> extends A
      * @param id the ID to assign to the aggregate root.
      */
     protected AbstractAggregateRoot(ID id) {
+
         super(id);
     }
 

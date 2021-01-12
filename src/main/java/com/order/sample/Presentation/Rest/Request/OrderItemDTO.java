@@ -1,6 +1,5 @@
 package com.order.sample.Presentation.Rest.Request;
 
-
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 

@@ -13,7 +13,6 @@ import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
-import java.time.Clock;
 import java.time.Instant;
 import java.util.HashSet;
 import java.util.Objects;
@@ -78,10 +77,7 @@ public class Order extends AbstractAggregateRoot<OrderId> implements Concurrency
         return state;
     }
 
-    private void setState(@NonNull OrderState state, @NonNull Clock clock) {
-        Objects.requireNonNull(clock, "clock must not be null");
-        setState(state, clock.instant());
-    }
+
     private void setState(@NonNull OrderState state, @NonNull Instant changedOn) {
         Objects.requireNonNull(state, "state must not be null");
         Objects.requireNonNull(changedOn, "changedOn must not be null");
@@ -126,16 +122,16 @@ public class Order extends AbstractAggregateRoot<OrderId> implements Concurrency
         return items.stream();
     }
 
-    public void cancel(@NonNull Clock clock) {
-        setState(OrderState.CANCELLED, clock);
+    public void cancel(@NonNull Instant instant) {
+        setState(OrderState.CANCELLED, instant);
     }
 
-    public void startProcessing(@NonNull Clock clock) {
-        setState(OrderState.PROCESSING, clock);
+    public void startProcessing(@NonNull Instant instant) {
+        setState(OrderState.PROCESSING, instant);
     }
 
-    public void finishProcessing(@NonNull Clock clock) {
-        setState(OrderState.PROCESSED, clock);
+    public void finishProcessing(@NonNull Instant instant) {
+        setState(OrderState.PROCESSED, instant);
     }
 
     @Nullable

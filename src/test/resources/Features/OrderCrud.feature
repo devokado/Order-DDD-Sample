@@ -5,7 +5,7 @@ Feature: Crud for order
       |currency           |Rial      |
       |name               |Antea     |
       |addressLine1       |somewhere |
-      |city               |Frankfurt     |
+      |city               |Frankfurt |
       |country            |IRAN      |
       |productId          |uuid      |
       |itemDescription    |Desc      |

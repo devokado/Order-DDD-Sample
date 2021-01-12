@@ -24,6 +24,9 @@ public class OrderEntity {
     private  String currency;
     @Column(name = "order_state", nullable = false)
     private  String state;
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "order_state_changes")
+    private Set<OrderStateChangeEntity> stateChangeHistory;
     @Embedded
     @AttributeOverrides({
             @AttributeOverride(name = "name", column = @Column(name = "shipping_name", nullable = false)),
@@ -33,7 +36,7 @@ public class OrderEntity {
     })
     private RecipientAddressEntity shippingAddress;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "order_id", nullable = false)
     private Set<OrderItemEntity> items;
 
