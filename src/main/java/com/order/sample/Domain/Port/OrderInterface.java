@@ -10,7 +10,8 @@ public interface OrderInterface {
     Order findById(OrderId id);
     List<Order> findAll();
     Order patch(Order order);
-    Order startProcessing(OrderId id);
-    Order finishProcessing(OrderId id);
+    void startProcessing(OrderId id);
+    void finishProcessing(OrderId id);
+    void cancelProcessing(OrderId id);
 
 }

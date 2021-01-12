@@ -46,16 +46,23 @@ public class OrderController {
     }
     @PostMapping("{id}/startProcessing")
     public ResponseEntity<?> startProcessing(@PathVariable String id){
-        Order order = orderInterface.startProcessing(new OrderId(id));
-        OrderResponse response = OrderResponse.from(order);
-        return ResponseEntity.status(HttpStatus.OK).body(response);
+        orderInterface.startProcessing(new OrderId(id));
+
+        return ResponseEntity.status(HttpStatus.OK).build();
 
     }
     @PostMapping("{id}/finishProcessing")
     public ResponseEntity<?> finishProcessing(@PathVariable String id){
-        Order order = orderInterface.finishProcessing(new OrderId(id));
-        OrderResponse response = OrderResponse.from(order);
-        return ResponseEntity.status(HttpStatus.OK).body(response);
+        orderInterface.finishProcessing(new OrderId(id));
+
+        return ResponseEntity.status(HttpStatus.OK).build();
+
+    }
+    @PostMapping("{id}/cancelProcessing")
+    public ResponseEntity<?> cancelProcessing(@PathVariable String id){
+        orderInterface.cancelProcessing(new OrderId(id));
+
+        return ResponseEntity.status(HttpStatus.OK).build();
 
     }
 

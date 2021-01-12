@@ -140,6 +140,16 @@ public class OrderTest {
 
         assertEquals(order.state().toString(),"PROCESSED");
     }
+    @Test
+    @DisplayName("Test cancel order process")
+    public void cancelProcessingOrderTest(){
+        OrderEntity entity = new OrderEntity(UUID.randomUUID(),Instant.now(),"Rial","RECEIVED",new RecipientAddressEntity("name","someWhere",new CityName("tehran"),Country.IRAN),null);
+
+        Order order = entity.toOrder();
+        order.cancel(Instant.now());
+
+        assertEquals(order.state().toString(),"CANCELLED");
+    }
 
 
 

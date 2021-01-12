@@ -61,7 +61,7 @@ public class OrderImpl implements OrderInterface {
     }
 
     @Override
-    public Order startProcessing(OrderId id) {
+    public void startProcessing(OrderId id) {
         Optional<OrderEntity> dto = orderRepository.findById(UUID.fromString(id.toUUID()));
         OrderEntity entity = new OrderEntity();
         Order order = new Order();
@@ -75,11 +75,11 @@ public class OrderImpl implements OrderInterface {
         {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Unable to find resource");
         }
-        return order;
+        return;
     }
 
     @Override
-    public Order finishProcessing(OrderId id) {
+    public void finishProcessing(OrderId id) {
         Optional<OrderEntity> dto = orderRepository.findById(UUID.fromString(id.toUUID()));
         OrderEntity entity = new OrderEntity();
         Order order = new Order();
@@ -93,6 +93,24 @@ public class OrderImpl implements OrderInterface {
         {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Unable to find resource");
         }
-        return order;
+        return;
+    }
+
+    @Override
+    public void cancelProcessing(OrderId id) {
+        Optional<OrderEntity> dto = orderRepository.findById(UUID.fromString(id.toUUID()));
+        OrderEntity entity = new OrderEntity();
+        Order order = new Order();
+        if(dto.isPresent()){
+            order = dto.get().toOrder();
+            order.cancel(Instant.now());
+            entity = OrderEntity.fromOrder(order);
+            orderRepository.save(entity);
+        }
+        else
+        {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Unable to find resource");
+        }
+        return;
     }
 }
