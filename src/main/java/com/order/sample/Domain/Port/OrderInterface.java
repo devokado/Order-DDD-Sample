@@ -11,5 +11,6 @@ public interface OrderInterface {
     List<Order> findAll();
     Order patch(Order order);
     Order startProcessing(OrderId id);
+    Order finishProcessing(OrderId id);
 
 }

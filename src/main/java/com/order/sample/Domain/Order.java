@@ -88,7 +88,7 @@ public class Order extends AbstractAggregateRoot<OrderId> implements Concurrency
         var stateChange = new OrderStateChange(changedOn, state);
         stateChangeHistory.add(stateChange);
         if (stateChangeHistory.size() > 1) {// Don't fire an event for the initial state
-           // registerEvent(new OrderStateChanged(id(), stateChange.state(), stateChange.changedOn()));
+         //   registerEvent(new OrderStateChanged(id(), stateChange.state(), stateChange.changedOn()));
         }
     }
     @NonNull

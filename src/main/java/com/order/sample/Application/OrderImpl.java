@@ -77,4 +77,22 @@ public class OrderImpl implements OrderInterface {
         }
         return order;
     }
+
+    @Override
+    public Order finishProcessing(OrderId id) {
+        Optional<OrderEntity> dto = orderRepository.findById(UUID.fromString(id.toUUID()));
+        OrderEntity entity = new OrderEntity();
+        Order order = new Order();
+        if(dto.isPresent()){
+            order = dto.get().toOrder();
+            order.finishProcessing(Instant.now());
+            entity = OrderEntity.fromOrder(order);
+            orderRepository.save(entity);
+        }
+        else
+        {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Unable to find resource");
+        }
+        return order;
+    }
 }

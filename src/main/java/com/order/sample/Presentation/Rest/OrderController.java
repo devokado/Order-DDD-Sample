@@ -51,6 +51,13 @@ public class OrderController {
         return ResponseEntity.status(HttpStatus.OK).body(response);
 
     }
+    @PostMapping("{id}/finishProcessing")
+    public ResponseEntity<?> finishProcessing(@PathVariable String id){
+        Order order = orderInterface.finishProcessing(new OrderId(id));
+        OrderResponse response = OrderResponse.from(order);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+
+    }
 
 
 }

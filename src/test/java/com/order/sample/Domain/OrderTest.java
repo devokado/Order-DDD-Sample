@@ -121,15 +121,24 @@ public class OrderTest {
     }
     @Test
     @DisplayName("Test start order process")
-    public void startProcessingOrder(){
+    public void startProcessingOrderTest(){
         OrderEntity entity = new OrderEntity(UUID.randomUUID(),Instant.now(),"Rial","RECEIVED",new RecipientAddressEntity("name","someWhere",new CityName("tehran"),Country.IRAN),null);
 
-        Order order = new Order();
-        order =  entity.toOrder();
+        Order order = entity.toOrder();
         order.startProcessing(Instant.now());
 
-        System.out.println(order.state());
+        assertEquals(order.state().toString(),"PROCESSING");
 
+    }
+    @Test
+    @DisplayName("Test finish order process")
+    public void finishProcessingOrderTest(){
+        OrderEntity entity = new OrderEntity(UUID.randomUUID(),Instant.now(),"Rial","RECEIVED",new RecipientAddressEntity("name","someWhere",new CityName("tehran"),Country.IRAN),null);
+
+        Order order = entity.toOrder();
+        order.finishProcessing(Instant.now());
+
+        assertEquals(order.state().toString(),"PROCESSED");
     }
 
 
