@@ -68,9 +68,10 @@ public class OrderTest {
     @Test
     @DisplayName("Convert DTO to Order")
     public void convertEntityToOrder(){
-        OrderEntity entity = new OrderEntity(UUID.randomUUID(),Instant.now(),"Rial","RECEIVED",new RecipientAddressEntity("name","someWhere",new CityName("tehran"),Country.IRAN),null);
+        OrderEntity entity = new OrderEntity(UUID.randomUUID(),Instant.now(),"Rial","RECEIVED",new RecipientAddressEntity("name","someWhere",new CityName("tehran"),Country.IRAN),null,true);
         Order order = entity.toOrder();
        assertEquals(entity.getId(),UUID.fromString(order.id().toUUID()));
+       assertEquals(order.status(),true);
     }
     @Test
     @DisplayName("Convert Order to OrderResponse")
@@ -122,7 +123,7 @@ public class OrderTest {
     @Test
     @DisplayName("Test start order process")
     public void startProcessingOrderTest(){
-        OrderEntity entity = new OrderEntity(UUID.randomUUID(),Instant.now(),"Rial","RECEIVED",new RecipientAddressEntity("name","someWhere",new CityName("tehran"),Country.IRAN),null);
+        OrderEntity entity = new OrderEntity(UUID.randomUUID(),Instant.now(),"Rial","RECEIVED",new RecipientAddressEntity("name","someWhere",new CityName("tehran"),Country.IRAN),null,true);
 
         Order order = entity.toOrder();
         order.startProcessing(Instant.now());
@@ -133,7 +134,7 @@ public class OrderTest {
     @Test
     @DisplayName("Test finish order process")
     public void finishProcessingOrderTest(){
-        OrderEntity entity = new OrderEntity(UUID.randomUUID(),Instant.now(),"Rial","RECEIVED",new RecipientAddressEntity("name","someWhere",new CityName("tehran"),Country.IRAN),null);
+        OrderEntity entity = new OrderEntity(UUID.randomUUID(),Instant.now(),"Rial","RECEIVED",new RecipientAddressEntity("name","someWhere",new CityName("tehran"),Country.IRAN),null,true);
 
         Order order = entity.toOrder();
         order.finishProcessing(Instant.now());
@@ -143,12 +144,17 @@ public class OrderTest {
     @Test
     @DisplayName("Test cancel order process")
     public void cancelProcessingOrderTest(){
-        OrderEntity entity = new OrderEntity(UUID.randomUUID(),Instant.now(),"Rial","RECEIVED",new RecipientAddressEntity("name","someWhere",new CityName("tehran"),Country.IRAN),null);
+        OrderEntity entity = new OrderEntity(UUID.randomUUID(),Instant.now(),"Rial","RECEIVED",new RecipientAddressEntity("name","someWhere",new CityName("tehran"),Country.IRAN),null,true);
 
         Order order = entity.toOrder();
         order.cancel(Instant.now());
 
         assertEquals(order.state().toString(),"CANCELLED");
+    }
+    @Test
+    @DisplayName("test soft delete")
+    public void softDelete(){
+
     }
 
 

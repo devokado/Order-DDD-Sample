@@ -31,6 +31,7 @@ public class Order extends AbstractAggregateRoot<OrderId> implements Concurrency
     private OrderState state;
     private Set<OrderStateChange> stateChangeHistory;
     private RecipientAddress shippingAddress;
+    private Boolean status;
     private Set<OrderItem> items;
 
     public Order() {
@@ -42,14 +43,16 @@ public class Order extends AbstractAggregateRoot<OrderId> implements Concurrency
         this.items = new HashSet<>();
         setOrderedOn(orderedOn);
         setCurrency(currency);
+        setStatus(true);
         setState(OrderState.RECEIVED, orderedOn);
         setShippingAddress(recipientAddress);
     }
-    public Order(UUID orderId, Instant orderedOn, Currency currency, OrderState state, RecipientAddress recipientAddress){
+    public Order(UUID orderId, Instant orderedOn, Currency currency, OrderState state, RecipientAddress recipientAddress,Boolean status){
         super(new OrderId(orderId.toString()));
         this.stateChangeHistory = new HashSet<>();
         setOrderedOn(orderedOn);
         setCurrency(currency);
+        setStatus(status);
         setState(state,orderedOn);
         setShippingAddress(recipientAddress);
     }
@@ -72,6 +75,14 @@ public class Order extends AbstractAggregateRoot<OrderId> implements Concurrency
         this.orderedOn = Objects.requireNonNull(orderedOn, "orderedOn must not be null");
     }
     @NonNull
+    @JsonProperty("status")
+    public Boolean status(){
+        return status;
+    }
+    private void setStatus(@NonNull Boolean status){
+        this.status = Objects.requireNonNull(status,"status cannot be null");
+    }
+    @NonNull
     @JsonProperty("state")
     public OrderState state() {
         return state;
@@ -89,6 +100,7 @@ public class Order extends AbstractAggregateRoot<OrderId> implements Concurrency
         stateChangeHistory.add(stateChange);
         if (stateChangeHistory.size() > 1) {// Don't fire an event for the initial state
          //   registerEvent(new OrderStateChanged(id(), stateChange.state(), stateChange.changedOn()));
+            new OrderStateChange(changedOn, state);
         }
     }
     @NonNull

@@ -27,18 +27,18 @@ public class OrderImpl implements OrderInterface {
 
     @Override
     public Order save(Order order) {
-       OrderEntity dto = OrderEntity.fromOrder(order);
-       OrderEntity fromDb = orderRepository.save(dto);
+       OrderEntity entity = OrderEntity.fromOrder(order);
+       OrderEntity fromDb = orderRepository.save(entity);
        Order orderRes = fromDb.toOrder();
         return orderRes;
     }
 
     @Override
     public Order findById(OrderId id) {
-        Optional<OrderEntity> dto = orderRepository.findById(UUID.fromString(id.toUUID()));
+        Optional<OrderEntity> entity = orderRepository.findById(UUID.fromString(id.toUUID()));
         Order order;
-        if ((dto.isPresent())) {
-            order = dto.get().toOrder();
+        if ((entity.isPresent())) {
+            order = entity.get().toOrder();
         }
         else
         {
@@ -54,6 +54,26 @@ public class OrderImpl implements OrderInterface {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public Order update(OrderId id, Order order) {
+        Optional<OrderEntity> entity = orderRepository.findById(UUID.fromString(id.toUUID()));
+        if (!entity.isPresent()){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Unable to find resource");
+        }
+        entity.get().toOrder();
+        return null;
+    }
+
+    @Override
+    public void delete(OrderId id) {
+        Optional<OrderEntity> entity = orderRepository.findById(UUID.fromString(id.toUUID()));
+        if (!entity.isPresent()){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Unable to find resource");
+        }
+        entity.get().setStatus(false);
+        orderRepository.save(entity.get());
+    }
+
 
     @Override
     public Order patch(Order order) {
@@ -63,8 +83,8 @@ public class OrderImpl implements OrderInterface {
     @Override
     public void startProcessing(OrderId id) {
         Optional<OrderEntity> dto = orderRepository.findById(UUID.fromString(id.toUUID()));
-        OrderEntity entity = new OrderEntity();
-        Order order = new Order();
+        OrderEntity entity;
+        Order order;
         if(dto.isPresent()){
             order = dto.get().toOrder();
             order.startProcessing(Instant.now());
@@ -81,8 +101,8 @@ public class OrderImpl implements OrderInterface {
     @Override
     public void finishProcessing(OrderId id) {
         Optional<OrderEntity> dto = orderRepository.findById(UUID.fromString(id.toUUID()));
-        OrderEntity entity = new OrderEntity();
-        Order order = new Order();
+        OrderEntity entity;
+        Order order;
         if(dto.isPresent()){
             order = dto.get().toOrder();
             order.finishProcessing(Instant.now());
@@ -99,11 +119,12 @@ public class OrderImpl implements OrderInterface {
     @Override
     public void cancelProcessing(OrderId id) {
         Optional<OrderEntity> dto = orderRepository.findById(UUID.fromString(id.toUUID()));
-        OrderEntity entity = new OrderEntity();
-        Order order = new Order();
+        OrderEntity entity;
+        Order order;
         if(dto.isPresent()){
             order = dto.get().toOrder();
             order.cancel(Instant.now());
+
             entity = OrderEntity.fromOrder(order);
             orderRepository.save(entity);
         }

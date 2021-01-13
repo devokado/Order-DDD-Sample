@@ -6,6 +6,7 @@ import com.order.sample.Domain.Port.OrderInterface;
 import com.order.sample.Presentation.Rest.Request.OrderDTO;
 import com.order.sample.Presentation.Rest.Response.OrderResponse;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,6 +45,13 @@ public class OrderController {
         OrderResponse response = OrderResponse.from(order);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
+    @PutMapping("/{id}")
+    public ResponseEntity<?> update(@PathVariable String id, @RequestBody OrderDTO orderDTO){
+        Order order = orderInterface.update(new OrderId(id),Order.toDomainModel(orderDTO));
+
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
     @PostMapping("{id}/startProcessing")
     public ResponseEntity<?> startProcessing(@PathVariable String id){
         orderInterface.startProcessing(new OrderId(id));
@@ -64,6 +72,11 @@ public class OrderController {
 
         return ResponseEntity.status(HttpStatus.OK).build();
 
+    }
+    @DeleteMapping("{id}")
+    public ResponseEntity<?> delete(@PathVariable String id){
+        orderInterface.delete(new OrderId(id));
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
 

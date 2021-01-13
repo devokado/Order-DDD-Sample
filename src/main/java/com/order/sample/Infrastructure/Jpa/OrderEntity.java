@@ -5,12 +5,14 @@ import com.order.sample.Domain.Order;
 import com.order.sample.Domain.RecipientAddress;
 import com.order.sample.Domain.SeedWork.Enums.Currency;
 import com.order.sample.Domain.SeedWork.Enums.OrderState;
+import lombok.Data;
 
 import javax.persistence.*;
 import java.time.Instant;
 import java.util.Set;
 import java.util.UUID;
 
+@Data
 @Entity
 @Table(name = "orders")
 public class OrderEntity {
@@ -22,6 +24,8 @@ public class OrderEntity {
     private  Instant orderedOn;
     @Column(name="order_currency",nullable = false)
     private  String currency;
+    @Column(name="status",nullable = false)
+    private Boolean status;
     @Column(name = "order_state", nullable = false)
     private  String state;
     @ElementCollection(fetch = FetchType.EAGER)
@@ -44,13 +48,14 @@ public class OrderEntity {
     public OrderEntity() {
     }
 
-    public OrderEntity(UUID id, Instant orderedOn, String currency, String state, RecipientAddressEntity shippingAddress, Set<OrderItemEntity> items) {
+    public OrderEntity(UUID id, Instant orderedOn, String currency, String state, RecipientAddressEntity shippingAddress, Set<OrderItemEntity> items,Boolean status) {
         this.id = id;
         this.orderedOn = orderedOn;
         this.currency = currency;
         this.state = state;
         this.shippingAddress =shippingAddress;
         this.items = items;
+        this.status = status;
     }
 
     public UUID getId() {
@@ -58,10 +63,10 @@ public class OrderEntity {
     }
 
     public static OrderEntity fromOrder(Order order){
-      return  new OrderEntity(UUID.fromString(order.id().toUUID()),order.orderedOn(),order.currency().toString(),order.state().toString(),new RecipientAddressEntity(order.shippingAddress().name(),order.shippingAddress().getAddressLine1(),order.shippingAddress().getCity(),order.shippingAddress().getCountry()),null);
+      return  new OrderEntity(UUID.fromString(order.id().toUUID()),order.orderedOn(),order.currency().toString(),order.state().toString(),new RecipientAddressEntity(order.shippingAddress().name(),order.shippingAddress().getAddressLine1(),order.shippingAddress().getCity(),order.shippingAddress().getCountry()),null,order.status());
     }
     public Order toOrder(){
-        return new Order(id, orderedOn, Currency.valueOf(currency), OrderState.valueOf(state) ,new RecipientAddress(shippingAddress.getName(),shippingAddress.getAddressLine1(),shippingAddress.getCity(),shippingAddress.getCountry()));
+        return new Order(id, orderedOn, Currency.valueOf(currency), OrderState.valueOf(state) ,new RecipientAddress(shippingAddress.getName(),shippingAddress.getAddressLine1(),shippingAddress.getCity(),shippingAddress.getCountry()),status);
     }
 
 
