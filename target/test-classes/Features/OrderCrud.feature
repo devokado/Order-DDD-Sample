@@ -22,3 +22,15 @@ Feature: Crud for order
       |currency    | [A-Z]{1}[a-z]+                                                                           |
       |state       |[A-Z]+                                                                                    |
 
+
+
+  Scenario: retrieve the order with category id
+    When the client calls GET "api/orders/{id}" with id
+    Then the client receive status code of 200
+    And check the response value type
+      |attribute   |type        |
+      |id          | [0-9A-Fa-f]{8}[-0-9A-Fa-f]{5}[-0-9A-Fa-f]{5}[-0-9A-Fa-f]{5}[-0-9A-Fa-f]{13}              |
+      |orderedOn   | [0-9]{1,4}-[0-9]{1,2}-[0-9]{1,2}[T]{1}[0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}[.][0-9]{1,6}[Z]{1}|
+      |currency    | [A-Z]{1}[a-z]+                                                                           |
+      |state       |[A-Z]+                                                                                    |
+

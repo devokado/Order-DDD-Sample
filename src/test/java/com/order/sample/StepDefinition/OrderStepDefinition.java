@@ -77,4 +77,12 @@ public class OrderStepDefinition extends AbstractSpringConfigurationTest {
         }
 
     }
+    @When("^the client calls GET \"([^\"]*)\" with id$")
+    public void the_client_calls_GET_with_category_id(String path) throws Throwable {
+        Map<String, String> uriVariables = new HashMap<>();
+        uriVariables.put("id", String.valueOf(id));
+        String url = buildUrl(HOST, PORT, path, uriVariables);
+        logger.info("url {}", url);
+        response = invokeRESTCall(url, HttpMethod.GET, null);
+    }
 }
