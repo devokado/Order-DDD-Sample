@@ -51,6 +51,7 @@ public class OrderImpl implements OrderInterface {
     public List<Order> findAll() {
         return orderRepository.findAll()
                 .stream().map(OrderEntity::toOrder)
+                .filter(order -> {return order.status().equals(true);})
                 .collect(Collectors.toList());
     }
 
