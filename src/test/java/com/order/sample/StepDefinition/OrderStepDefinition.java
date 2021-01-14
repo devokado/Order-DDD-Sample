@@ -2,7 +2,6 @@ package com.order.sample.StepDefinition;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import cucumber.api.DataTable;
-import cucumber.api.PendingException;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -17,7 +16,10 @@ import org.springframework.http.ResponseEntity;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
+
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(Cucumber.class)
@@ -59,5 +61,20 @@ public class OrderStepDefinition extends AbstractSpringConfigurationTest {
         if (response== null)
             throw new RuntimeException();
         assertEquals(statusCode, response.getStatusCode().value()) ;
+    }
+    @Then("^check the response value type$")
+    public void the_check_response_value_type(DataTable table) throws Throwable {
+        if (response== null)
+            throw new RuntimeException();
+        List<Map<String, String>> attr =  table.asMaps(String.class, String.class);
+        String responseBody = response.getBody();
+        ObjectMapper mapper = new ObjectMapper();
+        Map<String, String> responseMap = mapper.readValue(responseBody, Map.class);
+        for(int i=0; i<attr.size(); i++) {
+            assertThat(String.valueOf(responseMap.get(attr.get(i).get("attribute")))).matches(Pattern.compile(attr.get(i).get("type"), Pattern.MULTILINE));
+
+
+        }
+
     }
 }
