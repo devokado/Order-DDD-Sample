@@ -24,7 +24,7 @@ Feature: Crud for order
 
 
 
-  Scenario: retrieve the order with category id
+  Scenario: retrieve the order with order id
     When the client calls GET "api/orders/{id}" with id
     Then the client receive status code of 200
     And check the response value type
@@ -34,3 +34,9 @@ Feature: Crud for order
       |currency    | [A-Z]{1}[a-z]+                                                                           |
       |state       |[A-Z]+                                                                                    |
 
+
+  Scenario: delete the category with order id
+    When the client calls DELETE "api/orders/{id}" with id
+    Then the client receive status code of 204
+    When the client calls GET "api/v1/categories/{id}" with id
+    Then the client receive status code of 404
