@@ -42,6 +42,22 @@ Feature: Crud for order
       |attribute   |type        |
       |state       |(PROCESSING)|
 
+  Scenario: finish order processing
+    When the client calls POST "api/orders/{id}/finishProcessing" with id
+    Then the client receive status code of 200
+    When the client calls GET "api/orders/{id}" with id
+    Then check the response value type
+      |attribute   |type        |
+      |state       |(PROCESSED)|
+
+  Scenario: cancel order processing
+    When the client calls POST "api/orders/{id}/cancelProcessing" with id
+    Then the client receive status code of 200
+    When the client calls GET "api/orders/{id}" with id
+    Then check the response value type
+      |attribute   |type        |
+      |state       |(CANCELLED)|
+
   Scenario: delete the order with order id
     When the client calls DELETE "api/orders/{id}" with id
     Then the client receive status code of 204
