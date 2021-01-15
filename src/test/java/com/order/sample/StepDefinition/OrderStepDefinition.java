@@ -37,6 +37,14 @@ public class OrderStepDefinition extends AbstractSpringConfigurationTest {
             logger.info("{} to be saved with {}",arg1,obj);
         }
     }
+    @When("^the client calls POST \"([^\"]*)\" with id$")
+    public void the_client_calls_POST_with_id(String path) throws Throwable {
+        Map<String, String> uriVariables = new HashMap<>();
+        uriVariables.put("id", String.valueOf(id));
+        String url = buildUrl(HOST, PORT, path, uriVariables);
+        logger.info("url {}", url);
+        response = invokeRESTCall(url, HttpMethod.POST, null);
+    }
     @When("^the client calls POST \"([^\"]*)\" with the given detail$")
     public void the_client_calls_POST_with_the_given_detail(String path) throws Throwable {
         if (logger.isInfoEnabled()) {

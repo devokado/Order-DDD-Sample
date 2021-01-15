@@ -28,15 +28,24 @@ Feature: Crud for order
     When the client calls GET "api/orders/{id}" with id
     Then the client receive status code of 200
     And check the response value type
-      |attribute   |type        |
+      |attribute   |type                                                                                      |
       |id          | [0-9A-Fa-f]{8}[-0-9A-Fa-f]{5}[-0-9A-Fa-f]{5}[-0-9A-Fa-f]{5}[-0-9A-Fa-f]{13}              |
       |orderedOn   | [0-9]{1,4}-[0-9]{1,2}-[0-9]{1,2}[T]{1}[0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2}[.][0-9]{1,6}[Z]{1}|
       |currency    | [A-Z]{1}[a-z]+                                                                           |
       |state       |[A-Z]+                                                                                    |
 
+  Scenario: start order processing
+    When the client calls POST "api/orders/{id}/startProcessing" with id
+    Then the client receive status code of 200
+    When the client calls GET "api/orders/{id}" with id
+    Then check the response value type
+      |attribute   |type        |
+      |state       |(PROCESSING)|
 
-  Scenario: delete the category with order id
+  Scenario: delete the order with order id
     When the client calls DELETE "api/orders/{id}" with id
     Then the client receive status code of 204
-    When the client calls GET "api/v1/categories/{id}" with id
+    When the client calls GET "api/order/{id}" with id
     Then the client receive status code of 404
+
+
