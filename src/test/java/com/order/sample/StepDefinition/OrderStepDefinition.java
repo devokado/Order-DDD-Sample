@@ -81,7 +81,6 @@ public class OrderStepDefinition extends AbstractSpringConfigurationTest {
         for(int i=0; i<attr.size(); i++) {
             assertThat(String.valueOf(responseMap.get(attr.get(i).get("attribute")))).matches(Pattern.compile(attr.get(i).get("type"), Pattern.MULTILINE));
 
-
         }
 
     }
