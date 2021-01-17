@@ -60,6 +60,7 @@ Feature: Crud for order
     When the client calls GET "api/orders" all orders
     Then the client receive status code of 200
 
+
   Scenario: delete the order with order id
     When the client calls DELETE "api/orders/{id}" with id
     Then the client receive status code of 204

@@ -11,12 +11,15 @@ import com.order.sample.Infrastructure.Jpa.Port.OrderRepository;
 import com.order.sample.Infrastructure.Jpa.RecipientAddressEntity;
 import com.order.sample.Presentation.Rest.Request.OrderDTO;
 import com.order.sample.Presentation.Rest.Response.OrderResponse;
+import org.aspectj.weaver.ast.Or;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.Instant;
 import java.util.*;
@@ -154,6 +157,9 @@ public class OrderTest {
     @Test
     @DisplayName("test soft delete")
     public void softDelete(){
+        OrderEntity entity = new OrderEntity(UUID.randomUUID(),Instant.now(),"Rial","RECEIVED",new RecipientAddressEntity("name","someWhere",new CityName("tehran"),Country.IRAN),null,true);
+        entity.setStatus(false);
+        //todo: I don't know how to test! :))
 
     }
 

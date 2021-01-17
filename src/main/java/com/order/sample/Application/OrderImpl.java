@@ -57,18 +57,14 @@ public class OrderImpl implements OrderInterface {
 
     @Override
     public Order update(OrderId id, Order order) {
-        Optional<OrderEntity> entity = orderRepository.findById(UUID.fromString(id.toUUID()));
-        if (!entity.isPresent()){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Unable to find resource");
-        }
-        entity.get().toOrder();
+
         return null;
     }
 
     @Override
     public void delete(OrderId id) {
         Optional<OrderEntity> entity = orderRepository.findById(UUID.fromString(id.toUUID()));
-        if (!entity.isPresent()){
+        if (entity.isEmpty()){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Unable to find resource");
         }
         entity.get().setStatus(false);
