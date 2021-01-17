@@ -100,4 +100,10 @@ public class OrderStepDefinition extends AbstractSpringConfigurationTest {
         logger.info("url {}", url);
         response = invokeRESTCall(url, HttpMethod.DELETE, null);
     }
+    @When("^the client calls GET \"([^\"]*)\" all orders")
+    public void the_client_calls_GET_all_orders(String path) throws Throwable{
+        String url = buildUrl(HOST,PORT,path);
+        logger.info("url {}",url);
+        response = invokeRESTCall(url,HttpMethod.GET,null);
+    }
 }

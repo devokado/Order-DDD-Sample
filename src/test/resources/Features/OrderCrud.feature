@@ -55,11 +55,16 @@ Feature: Crud for order
     Then check the response value type
       |attribute   |type        |
       |state       |(CANCELLED)|
+    
+  Scenario: get all orders
+    When the client calls GET "api/orders" all orders
+    Then the client receive status code of 200
+
 
   Scenario: delete the order with order id
     When the client calls DELETE "api/orders/{id}" with id
     Then the client receive status code of 204
-    When the client calls GET "api/order/{id}" with id
+    When the client calls GET "api/orders/{id}" with id
     Then the client receive status code of 404
 
 
