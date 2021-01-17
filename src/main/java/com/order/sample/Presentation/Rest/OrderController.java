@@ -6,7 +6,6 @@ import com.order.sample.Domain.Port.OrderInterface;
 import com.order.sample.Presentation.Rest.Request.OrderDTO;
 import com.order.sample.Presentation.Rest.Response.OrderResponse;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

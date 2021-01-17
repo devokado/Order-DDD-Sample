@@ -81,55 +81,48 @@ public class OrderImpl implements OrderInterface {
     @Override
     public void startProcessing(OrderId id) {
         Optional<OrderEntity> dto = orderRepository.findById(UUID.fromString(id.toUUID()));
-        OrderEntity entity;
         Order order;
-        if(dto.isPresent()){
-            order = dto.get().toOrder();
-            order.startProcessing(Instant.now());
-            entity = OrderEntity.fromOrder(order);
-            orderRepository.save(entity);
-        }
-        else
-        {
+        if(dto.isEmpty()){
             throw new NotFoundException("Unable to find resource",HttpStatus.NOT_FOUND);
         }
+
+            order = dto.get().toOrder();
+            order.startProcessing(Instant.now());
+            orderRepository.save(OrderEntity.fromOrder(order));
+
+
         return;
     }
 
     @Override
     public void finishProcessing(OrderId id) {
         Optional<OrderEntity> dto = orderRepository.findById(UUID.fromString(id.toUUID()));
-        OrderEntity entity;
         Order order;
-        if(dto.isPresent()){
-            order = dto.get().toOrder();
-            order.finishProcessing(Instant.now());
-            entity = OrderEntity.fromOrder(order);
-            orderRepository.save(entity);
-        }
-        else
-        {
+        if(dto.isEmpty()){
             throw new NotFoundException("Unable to find resource",HttpStatus.NOT_FOUND);
         }
+
+        order = dto.get().toOrder();
+        order.finishProcessing(Instant.now());
+        orderRepository.save(OrderEntity.fromOrder(order));
+
+
         return;
     }
 
     @Override
     public void cancelProcessing(OrderId id) {
         Optional<OrderEntity> dto = orderRepository.findById(UUID.fromString(id.toUUID()));
-        OrderEntity entity;
         Order order;
-        if(dto.isPresent()){
-            order = dto.get().toOrder();
-            order.cancel(Instant.now());
-
-            entity = OrderEntity.fromOrder(order);
-            orderRepository.save(entity);
-        }
-        else
-        {
+        if(dto.isEmpty()){
             throw new NotFoundException("Unable to find resource",HttpStatus.NOT_FOUND);
         }
+
+        order = dto.get().toOrder();
+        order.cancel(Instant.now());
+        orderRepository.save(OrderEntity.fromOrder(order));
+
+
         return;
     }
 }
