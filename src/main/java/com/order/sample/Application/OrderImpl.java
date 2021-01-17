@@ -1,5 +1,6 @@
 package com.order.sample.Application;
 
+import com.order.sample.Application.Exceptions.NotFoundException;
 import com.order.sample.Domain.Order;
 import com.order.sample.Domain.OrderId;
 import com.order.sample.Domain.Port.OrderInterface;
@@ -65,7 +66,7 @@ public class OrderImpl implements OrderInterface {
     public void delete(OrderId id) {
         Optional<OrderEntity> entity = orderRepository.findById(UUID.fromString(id.toUUID()));
         if (entity.isEmpty()){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Unable to find resource");
+            throw new NotFoundException("Unable to find resource",HttpStatus.NOT_FOUND);
         }
         entity.get().setStatus(false);
         orderRepository.save(entity.get());
@@ -90,7 +91,7 @@ public class OrderImpl implements OrderInterface {
         }
         else
         {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Unable to find resource");
+            throw new NotFoundException("Unable to find resource",HttpStatus.NOT_FOUND);
         }
         return;
     }
@@ -108,7 +109,7 @@ public class OrderImpl implements OrderInterface {
         }
         else
         {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Unable to find resource");
+            throw new NotFoundException("Unable to find resource",HttpStatus.NOT_FOUND);
         }
         return;
     }
@@ -127,7 +128,7 @@ public class OrderImpl implements OrderInterface {
         }
         else
         {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Unable to find resource");
+            throw new NotFoundException("Unable to find resource",HttpStatus.NOT_FOUND);
         }
         return;
     }
