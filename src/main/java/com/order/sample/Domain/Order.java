@@ -49,15 +49,21 @@ public class Order extends AbstractAggregateRoot<OrderId> implements Concurrency
         setState(OrderState.RECEIVED, orderedOn);
         setShippingAddress(recipientAddress);
     }
-    public Order(UUID orderId, Instant orderedOn, Currency currency, OrderState state, RecipientAddress recipientAddress,Boolean status){
+
+    public Order(UUID orderId, Instant orderedOn, Currency currency, OrderState state, RecipientAddress recipientAddress, Boolean status) {
         super(new OrderId(orderId.toString()));
         this.stateChangeHistory = new HashSet<>();
         setOrderedOn(orderedOn);
         setCurrency(currency);
         setStatus(status);
-        setState(state,orderedOn);
+        setState(state, orderedOn);
         setShippingAddress(recipientAddress);
     }
+
+    private void StateValidation(){
+
+    }
+
     @NonNull
     @JsonProperty("currency")
     public Currency currency() {
@@ -73,17 +79,21 @@ public class Order extends AbstractAggregateRoot<OrderId> implements Concurrency
     public Instant orderedOn() {
         return orderedOn;
     }
+
     private void setOrderedOn(@NonNull Instant orderedOn) {
         this.orderedOn = Objects.requireNonNull(orderedOn, "orderedOn must not be null");
     }
+
     @NonNull
     @JsonProperty("status")
-    public Boolean status(){
+    public Boolean status() {
         return status;
     }
-    private void setStatus(@NonNull Boolean status){
-        this.status = Objects.requireNonNull(status,"status cannot be null");
+
+    private void setStatus(@NonNull Boolean status) {
+        this.status = Objects.requireNonNull(status, "status cannot be null");
     }
+
     @NonNull
     @JsonProperty("state")
     public OrderState state() {
@@ -104,6 +114,7 @@ public class Order extends AbstractAggregateRoot<OrderId> implements Concurrency
             new OrderStateChange(changedOn, state);
         }
     }
+
     @NonNull
     @JsonProperty("shippingAddress")
     public RecipientAddress shippingAddress() {
@@ -124,7 +135,7 @@ public class Order extends AbstractAggregateRoot<OrderId> implements Concurrency
     @NonNull
     public OrderItem addItem(@NonNull Product product, int qty) {
         Objects.requireNonNull(product, "product must not be null");
-        var item = new OrderItem(product.id(), product.name(),product.price(),qty);
+        var item = new OrderItem(product.id(), product.name(), product.price(), qty);
         items.add(item);
         return item;
     }
@@ -153,10 +164,10 @@ public class Order extends AbstractAggregateRoot<OrderId> implements Concurrency
     }
 
 
+    // TODO: move it to the right place
+    public static Order toDomainModel(OrderDTO req) {
 
-    public static Order toDomainModel(OrderDTO req){
-
-        return new Order(Instant.now(),Currency.valueOf(req.getCurrency()),new RecipientAddress(req.getName(),req.getAddressLine1(),new CityName(req.getCity()),Country.valueOf(req.getCountry())));
+        return new Order(Instant.now(), Currency.valueOf(req.getCurrency()), new RecipientAddress(req.getName(), req.getAddressLine1(), new CityName(req.getCity()), Country.valueOf(req.getCountry())));
     }
 
 
