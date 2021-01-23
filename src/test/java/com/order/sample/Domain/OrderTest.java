@@ -11,15 +11,12 @@ import com.order.sample.Infrastructure.Jpa.Port.OrderRepository;
 import com.order.sample.Infrastructure.Jpa.RecipientAddressEntity;
 import com.order.sample.Presentation.Rest.Request.OrderDTO;
 import com.order.sample.Presentation.Rest.Response.OrderResponse;
-import org.aspectj.weaver.ast.Or;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.time.Instant;
 import java.util.*;
@@ -65,7 +62,7 @@ public class OrderTest {
         dto.setItemDescription("Something pretty expensive");
         dto.setItemPrice(100L);
         dto.setQuantity(2);
-        Order order = Order.toDomainModel(dto);
+        Order order = dto.toDomainModel();
         assertThat(order.currency().equals(dto.getCurrency()));
     }
     @Test

@@ -23,7 +23,7 @@ public class OrderController {
 
     @PostMapping
     public ResponseEntity<?> createOrder(@RequestBody OrderDTO orderDTO){
-        Order order = orderInterface.save(Order.toDomainModel(orderDTO));
+        Order order = orderInterface.save(orderDTO.toDomainModel());
         OrderResponse response = OrderResponse.from(order);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
@@ -46,7 +46,7 @@ public class OrderController {
     }
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@PathVariable String id, @RequestBody OrderDTO orderDTO){
-        Order order = orderInterface.update(new OrderId(id),Order.toDomainModel(orderDTO));
+        Order order = orderInterface.update(new OrderId(id),orderDTO.toDomainModel());
 
         return ResponseEntity.status(HttpStatus.OK).build();
     }

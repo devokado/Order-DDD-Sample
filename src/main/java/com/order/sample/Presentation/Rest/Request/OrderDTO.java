@@ -1,6 +1,13 @@
 package com.order.sample.Presentation.Rest.Request;
 
+import com.order.sample.Domain.Order;
+import com.order.sample.Domain.RecipientAddress;
+import com.order.sample.Domain.SeedWork.Enums.Currency;
+import com.order.sample.Domain.SeedWork.Geo.CityName;
+import com.order.sample.Domain.SeedWork.Geo.Country;
+
 import java.io.Serializable;
+import java.time.Instant;
 
 public class OrderDTO implements Serializable {
 
@@ -84,5 +91,9 @@ public class OrderDTO implements Serializable {
 
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
+    }
+
+    public Order toDomainModel(){
+        return new Order(Instant.now(), Currency.valueOf(currency),new RecipientAddress(name,addressLine1,new CityName(city), Country.valueOf(country)));
     }
 }
