@@ -25,12 +25,15 @@ public class OrderImpl implements OrderInterface {
     }
 
 
-
     @Override
     public Order save(Order order) {
-       OrderEntity entity = OrderEntity.fromOrder(order);
-       OrderEntity fromDb = orderRepository.save(entity);
-       Order orderRes = fromDb.toOrder();
+
+        // add domain model validation here
+
+        OrderEntity entity = OrderEntity.fromOrder(order);
+
+        OrderEntity fromDb = orderRepository.save(entity);
+        Order orderRes = fromDb.toOrder();
         return orderRes;
     }
 
@@ -40,10 +43,8 @@ public class OrderImpl implements OrderInterface {
         Order order;
         if ((entity.isPresent())) {
             order = entity.get().toOrder();
-        }
-        else
-        {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Unable to find resource");
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Unable to find resource");
         }
         return order;
     }
@@ -52,7 +53,9 @@ public class OrderImpl implements OrderInterface {
     public List<Order> findAll() {
         return orderRepository.findAll()
                 .stream().map(OrderEntity::toOrder)
-                .filter(order -> {return order.status().equals(true);})
+                .filter(order -> {
+                    return order.status().equals(true);
+                })
                 .collect(Collectors.toList());
     }
 
@@ -65,8 +68,8 @@ public class OrderImpl implements OrderInterface {
     @Override
     public void delete(OrderId id) {
         Optional<OrderEntity> entity = orderRepository.findById(UUID.fromString(id.toUUID()));
-        if (entity.isEmpty()){
-            throw new NotFoundException("Unable to find resource",HttpStatus.NOT_FOUND);
+        if (entity.isEmpty()) {
+            throw new NotFoundException("Unable to find resource", HttpStatus.NOT_FOUND);
         }
         entity.get().setStatus(false);
         orderRepository.save(entity.get());
@@ -82,13 +85,20 @@ public class OrderImpl implements OrderInterface {
     public void startProcessing(OrderId id) {
         Optional<OrderEntity> dto = orderRepository.findById(UUID.fromString(id.toUUID()));
         Order order;
-        if(dto.isEmpty()){
-            throw new NotFoundException("Unable to find resource",HttpStatus.NOT_FOUND);
+        if (dto.isEmpty()) {
+            throw new NotFoundException("Unable to find resource", HttpStatus.NOT_FOUND);
         }
 
-            order = dto.get().toOrder();
-            order.startProcessing(Instant.now());
-            orderRepository.save(OrderEntity.fromOrder(order));
+        /**
+         * if ( order.isValid() && order.canStateChangeToCancel() ) {
+         *                 order.startProcessing(Instant.now());
+         *                 orderRepository.save(OrderEntity.fromOrder(order));
+         *             }
+         */
+
+        order = dto.get().toOrder();
+        order.startProcessing(Instant.now());
+        orderRepository.save(OrderEntity.fromOrder(order));
 
 
         return;
@@ -98,8 +108,8 @@ public class OrderImpl implements OrderInterface {
     public void finishProcessing(OrderId id) {
         Optional<OrderEntity> dto = orderRepository.findById(UUID.fromString(id.toUUID()));
         Order order;
-        if(dto.isEmpty()){
-            throw new NotFoundException("Unable to find resource",HttpStatus.NOT_FOUND);
+        if (dto.isEmpty()) {
+            throw new NotFoundException("Unable to find resource", HttpStatus.NOT_FOUND);
         }
 
         order = dto.get().toOrder();
@@ -114,8 +124,8 @@ public class OrderImpl implements OrderInterface {
     public void cancelProcessing(OrderId id) {
         Optional<OrderEntity> dto = orderRepository.findById(UUID.fromString(id.toUUID()));
         Order order;
-        if(dto.isEmpty()){
-            throw new NotFoundException("Unable to find resource",HttpStatus.NOT_FOUND);
+        if (dto.isEmpty()) {
+            throw new NotFoundException("Unable to find resource", HttpStatus.NOT_FOUND);
         }
 
         order = dto.get().toOrder();
