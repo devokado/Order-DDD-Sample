@@ -90,7 +90,7 @@ public class OrderTest {
     expectedList.add(OrderEntity.fromOrder(order1));
     expectedList.add(OrderEntity.fromOrder(order2));
         Mockito.when(orderRepository.findAll()).thenReturn(expectedList);
-    List<Order> foundOrders = orderInterface.findAll();
+    List<Order> foundOrders = orderInterface.searchForAllOrders();
 
         assertThat(!foundOrders.isEmpty());
         assertThat(foundOrders.size() == 2);

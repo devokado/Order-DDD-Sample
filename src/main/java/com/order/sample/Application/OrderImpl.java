@@ -26,7 +26,7 @@ public class OrderImpl implements OrderInterface {
 
 
     @Override
-    public Order save(Order order) {
+    public Order createOrder(Order order) {
 
         // add domain model validation here
 
@@ -38,7 +38,7 @@ public class OrderImpl implements OrderInterface {
     }
 
     @Override
-    public Order findById(OrderId id) {
+    public Order searchForOrderById(OrderId id) {
         Optional<OrderEntity> entity = orderRepository.findById(UUID.fromString(id.toUUID()));
         Order order;
         if ((entity.isPresent())) {
@@ -50,7 +50,7 @@ public class OrderImpl implements OrderInterface {
     }
 
     @Override
-    public List<Order> findAll() {
+    public List<Order> searchForAllOrders() {
         return orderRepository.findAll()
                 .stream().map(OrderEntity::toOrder)
                 .filter(order -> {
@@ -60,13 +60,13 @@ public class OrderImpl implements OrderInterface {
     }
 
     @Override
-    public Order update(OrderId id, Order order) {
+    public Order updateOrder(OrderId id, Order order) {
 
         return null;
     }
 
     @Override
-    public void delete(OrderId id) {
+    public void deleteOrder(OrderId id) {
         Optional<OrderEntity> entity = orderRepository.findById(UUID.fromString(id.toUUID()));
         if (entity.isEmpty()) {
             throw new NotFoundException("Unable to find resource", HttpStatus.NOT_FOUND);
@@ -77,7 +77,7 @@ public class OrderImpl implements OrderInterface {
 
 
     @Override
-    public Order patch(Order order) {
+    public Order patchOrder(Order order) {
         return null;
     }
 

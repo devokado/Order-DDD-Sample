@@ -24,7 +24,7 @@ public class OrderController {
     @PostMapping
     public ResponseEntity<?> createOrder(@RequestBody OrderDTO orderDTO){
 
-        Order order = orderInterface.save(orderDTO.toDomainModel());
+        Order order = orderInterface.createOrder(orderDTO.toDomainModel());
 
         OrderResponse response = OrderResponse.from(order);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
@@ -32,7 +32,7 @@ public class OrderController {
 
     @GetMapping
     public ResponseEntity<?> findAll() {
-       List<Order> orders =  orderInterface.findAll();
+       List<Order> orders =  orderInterface.searchForAllOrders();
        List<OrderResponse> responseList = orders
                .stream()
                .map(order -> OrderResponse.from(order))
@@ -42,13 +42,13 @@ public class OrderController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> findById(@PathVariable String id){
-        Order order = orderInterface.findById(new OrderId(id));
+        Order order = orderInterface.searchForOrderById(new OrderId(id));
         OrderResponse response = OrderResponse.from(order);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@PathVariable String id, @RequestBody OrderDTO orderDTO){
-        Order order = orderInterface.update(new OrderId(id),orderDTO.toDomainModel());
+        Order order = orderInterface.updateOrder(new OrderId(id),orderDTO.toDomainModel());
 
         return ResponseEntity.status(HttpStatus.OK).build();
     }
@@ -76,7 +76,7 @@ public class OrderController {
     }
     @DeleteMapping("{id}")
     public ResponseEntity<?> delete(@PathVariable String id){
-        orderInterface.delete(new OrderId(id));
+        orderInterface.deleteOrder(new OrderId(id));
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
