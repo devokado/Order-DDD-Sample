@@ -6,19 +6,30 @@ import com.order.sample.Domain.SeedWork.Enums.Currency;
 import com.order.sample.Domain.SeedWork.Geo.CityName;
 import com.order.sample.Domain.SeedWork.Geo.Country;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 import java.time.Instant;
 
 public class OrderDTO implements Serializable {
-
+    @NotNull(message = "Currency can not be null")
+    @Pattern(regexp = "Rial|Dollar|EUR")
     private String currency;
+    @NotNull(message = "name can not be null")
     private String name;
+    @NotNull(message = "Address can not be null")
     private String addressLine1;
+    @NotNull(message = "City can not be null")
     private String city;
+    @NotNull(message = "Country can not be null")
+    @Pattern(regexp = "IRAN|GERMANY|ITALY|TURKEY")
     private String country;
+    @NotNull(message = "productId can not be null")
     private String productId;
     private String itemDescription;
+    @NotNull(message = "item price can not be null")
     private Long itemPrice;
+    @NotNull(message = "quantity can not be null")
     private Integer quantity;
 
     public String getCurrency() {
