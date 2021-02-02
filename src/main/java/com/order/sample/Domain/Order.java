@@ -1,16 +1,12 @@
 package com.order.sample.Domain;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.order.sample.Domain.Exceptions.IllegalStateException;
 import com.order.sample.Domain.SeedWork.Base.AbstractAggregateRoot;
 import com.order.sample.Domain.SeedWork.Base.ConcurrencySafeDomainObject;
 import com.order.sample.Domain.SeedWork.Base.DomainObjectId;
 import com.order.sample.Domain.SeedWork.Enums.Currency;
 import com.order.sample.Domain.SeedWork.Enums.OrderState;
-import com.order.sample.Domain.SeedWork.Geo.CityName;
-import com.order.sample.Domain.SeedWork.Geo.Country;
-import com.order.sample.Presentation.Rest.Request.OrderDTO;
-import org.springframework.http.HttpStatus;
+import com.order.sample.Domain.Validators.StateValidate;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 
@@ -60,9 +56,6 @@ public class Order extends AbstractAggregateRoot<OrderId> implements Concurrency
         setShippingAddress(recipientAddress);
     }
 
-    private void StateValidation(){
-
-    }
 
     @NonNull
     @JsonProperty("currency")
@@ -104,9 +97,12 @@ public class Order extends AbstractAggregateRoot<OrderId> implements Concurrency
     private void setState(@NonNull OrderState state, @NonNull Instant changedOn) {
         Objects.requireNonNull(state, "state must not be null");
         Objects.requireNonNull(changedOn, "changedOn must not be null");
-        if (stateChangeHistory.stream().anyMatch(stateChange -> stateChange.state().equals(state))) {
-            throw new IllegalStateException("Order has already been in state " + state, HttpStatus.BAD_REQUEST);
-        }
+        StateValidate.validate(state,stateChangeHistory);
+//        if (stateChangeHistory.stream().anyMatch(stateChange -> stateChange.state().equals(state))) {
+//            throw new IllegalStateException("Order has already been in state " + state);
+//
+//        }
+
         this.state = state;
         var stateChange = new OrderStateChange(changedOn, state);
         stateChangeHistory.add(stateChange);
