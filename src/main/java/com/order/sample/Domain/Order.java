@@ -6,11 +6,14 @@ import com.order.sample.Domain.SeedWork.Base.ConcurrencySafeDomainObject;
 import com.order.sample.Domain.SeedWork.Base.DomainObjectId;
 import com.order.sample.Domain.SeedWork.Enums.Currency;
 import com.order.sample.Domain.SeedWork.Enums.OrderState;
+import com.order.sample.Domain.Validators.OrderValidator;
 import com.order.sample.Domain.Validators.StateValidate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
+import javax.validation.Valid;
 import java.time.Instant;
 import java.util.HashSet;
 import java.util.Objects;
@@ -94,14 +97,14 @@ public class Order extends AbstractAggregateRoot<OrderId> implements Concurrency
     }
 
 
-    private void setState(@NonNull OrderState state, @NonNull Instant changedOn) {
+    private void setState(@NonNull @Valid OrderState state, @NonNull Instant changedOn) {
         Objects.requireNonNull(state, "state must not be null");
         Objects.requireNonNull(changedOn, "changedOn must not be null");
-        StateValidate.validate(state,stateChangeHistory);
-//        if (stateChangeHistory.stream().anyMatch(stateChange -> stateChange.state().equals(state))) {
-//            throw new IllegalStateException("Order has already been in state " + state);
-//
-//        }
+
+        if (stateChangeHistory.stream().anyMatch(stateChange -> stateChange.state().equals(state))) {
+            throw new IllegalStateException("Order has already been in state " + state);
+
+        }
 
         this.state = state;
         var stateChange = new OrderStateChange(changedOn, state);

@@ -3,10 +3,12 @@ package com.order.sample.Presentation.Rest;
 import com.order.sample.Domain.Order;
 import com.order.sample.Domain.OrderId;
 import com.order.sample.Domain.Port.OrderInterface;
+import com.order.sample.Domain.Validators.OrderValidator;
 import com.order.sample.Presentation.Rest.Request.OrderDTO;
 import com.order.sample.Presentation.Rest.Response.OrderResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,14 +18,16 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/orders")
 public class OrderController {
     private final OrderInterface orderInterface;
+    private final OrderValidator orderValidator;
 
-    public OrderController(OrderInterface orderInterface) {
+    public OrderController(OrderInterface orderInterface, OrderValidator orderValidator) {
         this.orderInterface = orderInterface;
+        this.orderValidator = orderValidator;
     }
 
     @PostMapping
-    public ResponseEntity<?> createOrder(@RequestBody OrderDTO orderDTO){
-
+    public ResponseEntity<?> createOrder(@RequestBody OrderDTO orderDTO, BindingResult result){
+        orderValidator.validate(orderDTO.toDomainModel(),result);
         Order order = orderInterface.createOrder(orderDTO.toDomainModel());
 
         OrderResponse response = OrderResponse.from(order);
