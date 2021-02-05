@@ -1,25 +1,16 @@
 package com.order.sample.Domain;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.order.sample.Domain.SeedWork.Base.AbstractAggregateRoot;
 import com.order.sample.Domain.SeedWork.Base.ConcurrencySafeDomainObject;
 import com.order.sample.Domain.SeedWork.Base.DomainObjectId;
 import com.order.sample.Domain.SeedWork.Enums.Currency;
 import com.order.sample.Domain.SeedWork.Enums.OrderState;
-import com.order.sample.Domain.Validators.OrderValidator;
-import com.order.sample.Domain.Validators.StateValidate;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.lang.NonNull;
-import org.springframework.lang.Nullable;
-
 import javax.persistence.*;
-import javax.validation.Valid;
 import java.time.Instant;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
-import java.util.stream.Stream;
 
 
 public class Order extends AbstractAggregateRoot<OrderId> implements ConcurrencySafeDomainObject {
@@ -60,44 +51,36 @@ public class Order extends AbstractAggregateRoot<OrderId> implements Concurrency
     }
 
 
-    @NonNull
-    @JsonProperty("currency")
-    public Currency currency() {
+    public Currency getCurrency() {
         return currency;
     }
 
-    private void setCurrency(@NonNull Currency currency) {
+    private void setCurrency(Currency currency) {
         this.currency = Objects.requireNonNull(currency, "currency must not be null");
     }
 
-    @NonNull
-    @JsonProperty("orderedOn")
-    public Instant orderedOn() {
+    public Instant getOrderedOn() {
         return orderedOn;
     }
 
-    private void setOrderedOn(@NonNull Instant orderedOn) {
+    private void setOrderedOn(Instant orderedOn) {
         this.orderedOn = Objects.requireNonNull(orderedOn, "orderedOn must not be null");
     }
 
-    @NonNull
-    @JsonProperty("status")
-    public Boolean status() {
+
+    public Boolean getStatus() {
         return status;
     }
 
-    private void setStatus(@NonNull Boolean status) {
+    private void setStatus(Boolean status) {
         this.status = Objects.requireNonNull(status, "status cannot be null");
     }
 
-    @NonNull
-    @JsonProperty("state")
-    public OrderState state() {
+    public OrderState getState() {
         return state;
     }
 
-
-    private void setState(@NonNull @Valid OrderState state, @NonNull Instant changedOn) {
+    private void setState(OrderState state,Instant changedOn) {
         Objects.requireNonNull(state, "state must not be null");
         Objects.requireNonNull(changedOn, "changedOn must not be null");
 
@@ -114,53 +97,46 @@ public class Order extends AbstractAggregateRoot<OrderId> implements Concurrency
         }
     }
 
-    @NonNull
-    @JsonProperty("shippingAddress")
-    public RecipientAddress shippingAddress() {
+    public RecipientAddress getShippingAddress() {
         return shippingAddress;
     }
 
-    private void setShippingAddress(@NonNull RecipientAddress shippingAddress) {
+    private void setShippingAddress(RecipientAddress shippingAddress) {
         this.shippingAddress = Objects.requireNonNull(shippingAddress, "shippingAddress must not be null");
     }
 
-    @NonNull
-    @JsonProperty("stateChangeHistory")
-    public Stream<OrderStateChange> stateChangeHistory() {
-        return stateChangeHistory.stream();
+
+    public Set<OrderStateChange> getStateChangeHistory() {
+        return stateChangeHistory;
     }
 
 
-    @NonNull
-    public OrderItem addItem(@NonNull Product product, int qty) {
+    public OrderItem addItem( Product product, int qty) {
         Objects.requireNonNull(product, "product must not be null");
         var item = new OrderItem(product.id(), product.name(), product.price(), qty);
         items.add(item);
         return item;
     }
 
-    @NonNull
-    @JsonProperty("items")
-    public Stream<OrderItem> items() {
-        return items.stream();
+    public Set<OrderItem> getItems() {
+        return items;
     }
 
-    public void cancel(@NonNull Instant instant) {
+    public void cancel(Instant instant) {
         setState(OrderState.CANCELLED, instant);
     }
 
-    public void startProcessing(@NonNull Instant instant) {
+    public void startProcessing(Instant instant) {
         setState(OrderState.PROCESSING, instant);
     }
 
-    public void finishProcessing(@NonNull Instant instant) {
+    public void finishProcessing(Instant instant) {
         setState(OrderState.PROCESSED, instant);
     }
 
-    @Nullable
+
+    @Override
     public Long version() {
-        return version;
+        return null;
     }
-
-
 }

@@ -22,6 +22,7 @@ import java.time.Instant;
 import java.util.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
 @SpringBootTest
 public class OrderTest {
@@ -38,7 +39,7 @@ public class OrderTest {
         RecipientAddress recipientAddress = new RecipientAddress("name","address",new CityName("tehran"), Country.IRAN);
         Order newOrder = new Order(Instant.now(),Currency.Rial,recipientAddress);
         System.out.println(newOrder);
-        assertThat(newOrder.id() != null);
+        assertNotEquals(null,newOrder.id());
 
     }
 
@@ -47,7 +48,7 @@ public class OrderTest {
     public void ConvertOrderDomainToEntity(){
        Order order = new Order(Instant.now(),Currency.Rial,new RecipientAddress("name","somewhere",new CityName("tehran"),Country.IRAN));
        OrderEntity entity = OrderEntity.fromOrder(order);
-       assertThat(entity.equals(order));
+       assertEquals(entity,order);
     }
     @Test
     @DisplayName("Convert OrderReq to Order Domain")
@@ -63,7 +64,7 @@ public class OrderTest {
         dto.setItemPrice(100L);
         dto.setQuantity(2);
         Order order = dto.toDomainModel();
-        assertThat(order.currency().equals(dto.getCurrency()));
+        assertEquals(order.getCurrency(),dto.getCurrency());
     }
     @Test
     @DisplayName("Convert DTO to Order")
@@ -71,7 +72,7 @@ public class OrderTest {
         OrderEntity entity = new OrderEntity(UUID.randomUUID(),Instant.now(),"Rial","RECEIVED",new RecipientAddressEntity("name","someWhere",new CityName("tehran"),Country.IRAN),null,true);
         Order order = entity.toOrder();
        assertEquals(entity.getId(),UUID.fromString(order.id().toUUID()));
-       assertEquals(order.status(),true);
+       assertEquals(order.getStatus(),true);
     }
     @Test
     @DisplayName("Convert Order to OrderResponse")
@@ -128,7 +129,7 @@ public class OrderTest {
         Order order = entity.toOrder();
         order.startProcessing(Instant.now());
 
-        assertEquals(order.state().toString(),"PROCESSING");
+        assertEquals(order.getState().toString(),"PROCESSING");
 
     }
     @Test
@@ -139,7 +140,7 @@ public class OrderTest {
         Order order = entity.toOrder();
         order.finishProcessing(Instant.now());
 
-        assertEquals(order.state().toString(),"PROCESSED");
+        assertEquals(order.getState().toString(),"PROCESSED");
     }
     @Test
     @DisplayName("Test cancel order process")
@@ -149,7 +150,7 @@ public class OrderTest {
         Order order = entity.toOrder();
         order.cancel(Instant.now());
 
-        assertEquals(order.state().toString(),"CANCELLED");
+        assertEquals(order.getState().toString(),"CANCELLED");
     }
     @Test
     @DisplayName("test soft delete")
