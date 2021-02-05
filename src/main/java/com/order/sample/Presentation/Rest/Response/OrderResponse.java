@@ -47,6 +47,6 @@ public class OrderResponse {
         this.state = state;
     }
     public static OrderResponse from(Order order){
-        return new OrderResponse(order.id().toUUID(),order.orderedOn().toString(),order.currency().name(),order.state().name());
+        return new OrderResponse(order.id().toUUID(),order.getOrderedOn().toString(),order.getCurrency().name(),order.getState().name());
     }
 }

@@ -7,10 +7,7 @@ import com.order.sample.Domain.SeedWork.Enums.Currency;
 import com.order.sample.Domain.SeedWork.Enums.OrderState;
 import javax.persistence.*;
 import java.time.Instant;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 
 public class Order extends AbstractAggregateRoot<OrderId> implements ConcurrencySafeDomainObject {
@@ -49,6 +46,14 @@ public class Order extends AbstractAggregateRoot<OrderId> implements Concurrency
         setState(state, orderedOn);
         setShippingAddress(recipientAddress);
     }
+    public List<String> canChangeState(OrderState state,OrderState newState){
+        List<String> errors = new ArrayList<>();
+        if(state.equals(newState)){
+            errors.add("state is already in this state");
+        }
+
+        return errors;
+    }
 
 
     public Currency getCurrency() {
@@ -84,10 +89,11 @@ public class Order extends AbstractAggregateRoot<OrderId> implements Concurrency
         Objects.requireNonNull(state, "state must not be null");
         Objects.requireNonNull(changedOn, "changedOn must not be null");
 
-        if (stateChangeHistory.stream().anyMatch(stateChange -> stateChange.state().equals(state))) {
-            throw new IllegalStateException("Order has already been in state " + state);
 
-        }
+//        if (stateChangeHistory.stream().anyMatch(stateChange -> stateChange.state().equals(state))) {
+//            throw new IllegalStateException("Order has already been in state " + state);
+//
+//        }
 
         this.state = state;
         var stateChange = new OrderStateChange(changedOn, state);

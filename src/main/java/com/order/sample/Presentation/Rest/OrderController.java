@@ -3,6 +3,7 @@ package com.order.sample.Presentation.Rest;
 import com.order.sample.Domain.Order;
 import com.order.sample.Domain.OrderId;
 import com.order.sample.Domain.Port.OrderInterface;
+import com.order.sample.Domain.SeedWork.Enums.OrderState;
 import com.order.sample.Domain.Validators.OrderValidator;
 import com.order.sample.Presentation.Rest.Request.OrderDTO;
 import com.order.sample.Presentation.Rest.Response.OrderResponse;
@@ -11,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,10 +29,13 @@ public class OrderController {
 
     @PostMapping
     public ResponseEntity<?> createOrder(@RequestBody OrderDTO orderDTO, BindingResult result){
-        orderValidator.validate(orderDTO.toDomainModel(),result);
-        Order order = orderInterface.createOrder(orderDTO.toDomainModel());
+       // orderValidator.validate(orderDTO.toDomainModel(),result);
 
-        OrderResponse response = OrderResponse.from(order);
+       // Order order = orderInterface.createOrder(orderDTO.toDomainModel());
+        Order order = orderDTO.toDomainModel();
+
+        order =orderInterface.createOrder(order);
+        OrderResponse response = OrderResponse.from(orderInterface.createOrder(order));
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 

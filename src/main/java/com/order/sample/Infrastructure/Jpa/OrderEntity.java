@@ -63,7 +63,7 @@ public class OrderEntity {
     }
 
     public static OrderEntity fromOrder(Order order){
-      return  new OrderEntity(UUID.fromString(order.id().toUUID()),order.orderedOn(),order.currency().toString(),order.state().toString(),new RecipientAddressEntity(order.shippingAddress().name(),order.shippingAddress().getAddressLine1(),order.shippingAddress().getCity(),order.shippingAddress().getCountry()),null,order.status());
+      return  new OrderEntity(UUID.fromString(order.id().toUUID()),order.getOrderedOn(),order.getCurrency().toString(),order.getState().toString(),new RecipientAddressEntity(order.getShippingAddress().name(),order.getShippingAddress().getAddressLine1(),order.getShippingAddress().getCity(),order.getShippingAddress().getCountry()),null,order.getStatus());
     }
     public Order toOrder(){
         return new Order(id, orderedOn, Currency.valueOf(currency), OrderState.valueOf(state) ,new RecipientAddress(shippingAddress.getName(),shippingAddress.getAddressLine1(),shippingAddress.getCity(),shippingAddress.getCountry()),status);

@@ -15,11 +15,11 @@ public class OrderValidator implements Validator {
     @Override
     public void validate(Object obj, Errors e) {
         Order o =(Order) obj;
-        if (o.stateChangeHistory().anyMatch(stateChange -> stateChange.state().equals(o.state()))) {
-
-          e.rejectValue("state","is already in this state");
-
-        }
+//        if (o.getStateChangeHistory().anyMatch(stateChange -> stateChange.state().equals(o.getState()))) {
+//
+//          e.rejectValue("state","is already in this state");
+//
+//        }
 
     }
 }
